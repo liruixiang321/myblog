@@ -1,6 +1,6 @@
 module.exports = {
   title: "lrx's Blog",
-  base: '/Blog/',
+  base: '/myblog/',
   description: 'Just playing around.',
   themeConfig: {
       logo:'/1.png',
