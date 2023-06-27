@@ -37,14 +37,13 @@ module.exports = {
       ],
       // sideber以对象的形式配置的话每个sidebar都是独立的 如果以数组的形式配置那么侧边栏是公共的 进入其他子页面都可以看到
       sidebar: {
-           collapsed: false, 
+          collapsable: false,
             //是否折叠
-          '/work/': [
+          '/artworks/': [
               {
-                  text: '我的工作日常',
+                  text: '我的博客',
                   items: [
-                      { text: '踩坑记录', link: '/work/mistake' },
-                      { text: '学习记录', link: '/work/study' }
+                      { text: '建站记录', link: '/artworks/vitepressblog' }
                   ]
               },
               {
