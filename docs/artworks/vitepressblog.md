@@ -20,7 +20,7 @@
 
 这里直接参考vitepress官网中的[快速入门](https://vitejs.cn/vitepress/guide/getting-started.html)，将整个项目的基本框架先搭建起来。搭建起来的项目docs目录是这样的
 
-```
+```markdown
 .
 ├─ docs
 │  ├─ .vitepress
@@ -99,7 +99,7 @@ module.exports = {
 
 主页配置index.md
 
-```
+```markdown
 ---
 layout: home
 
@@ -147,7 +147,7 @@ features:
 
 具体文件内容如下：
 
-```
+```markdown
 
 on: # 触发条件
   # 每当 push 到 master 分支时触发部署
