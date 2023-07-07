@@ -274,13 +274,13 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
 
 显示
 
-![](D:\工作\Blog\docs\public\weeks\屏幕截图 2023-07-04 164224.png)
+![](https://github.com/liruixiang321/myblog/blob/master/docs/public/weeks/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202023-07-04%20164224.png?raw=true)
 
 #### Icônes
 
 类似于阿里的iconfont平台，可以自己挑选需要的图标库并进行下载，也是由antfu大佬进行开源
 
-![](D:\工作\Blog\docs\public\weeks\屏幕截图 2023-07-04 165056.png)
+![](https://github.com/liruixiang321/myblog/blob/master/docs/public/weeks/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202023-07-04%20165056.png?raw=true)
 
 最方便的是可以下载对应的组件，直接解压到相关项目的目录中，以组件的形式直接引入到项目中，太方便啦😎
 
@@ -292,7 +292,7 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
 
 可以是我们在编辑器中便可以看到图标，使用的时候先打出图标集名称，用`：`断开，插件会提供图标集下所有的图标可供搜索和选择。
 
-![](D:\工作\Blog\docs\public\weeks\屏幕截图 2023-07-04 171011.png)
+![](https://github.com/liruixiang321/myblog/blob/master/docs/public/weeks/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202023-07-04%20171011.png?raw=true)
 
 #### 新的解决发案(搭配自动导入插件)
 
