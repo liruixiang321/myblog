@@ -143,7 +143,7 @@ features:
 
 在根目录中创建/workflows/blank.yml文件或者通过github中的action进行创建如下图
 
-![github创建工作流](docs\public\artworks\actions.png)
+![github创建工作流](../public/artworks/actions.png)
 
 具体文件内容如下：
 
