@@ -143,7 +143,7 @@ features:
 
 在根目录中创建/workflows/blank.yml文件或者通过github中的action进行创建如下图
 
-![github创建工作流](D:\工作\Blog\docs\public\artworks\屏幕截图 2023-06-25 180924.png)
+![github创建工作流](docs\public\artworks\actions.png)
 
 具体文件内容如下：
 
@@ -208,7 +208,7 @@ jobs:
 
 之后将本地仓库推送到远程仓库，推送成功后，会自动执行这个工作流进行部署。需要注意的是这里需要创建Repository secrets
 
-![](D:\工作\Blog\docs\public\artworks\屏幕截图 2023-06-27 225943.png)
+![](../public/artworks/secret.png)
 
 需要注意的是secret的值是personal access token
 
