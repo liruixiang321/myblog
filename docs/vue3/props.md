@@ -116,6 +116,8 @@ const props = defineProps<{
   foo: string
   bar?: number
 }>()
+
+const {foo} = toRefs(props)//响应式解构
 </script>
 ```
 
@@ -135,4 +137,13 @@ const props = withDefaults(defineProps<Props>(), {
 
  :::warning   运行时和类型声明只能选择一种使用，不可同时使用。
 
+Vue3.3版本新功能默认值赋值
+首先需要在vite.config.js中配置
 
+ ![img](../public/vue3/props/viteConfig.png)
+
+``` js
+const {msg="hellow"} = defineProps<{msg?:String}>();
+```
+
+优雅👍
