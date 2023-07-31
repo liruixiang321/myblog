@@ -54,6 +54,18 @@ module.exports = {
           items: [{ text: "...1", link: "/work/opensource" }],
         },
       ],
+      "/base/ts": [
+        {
+          text: "TS学习🖊",
+          items: [
+            { text: "日常学习", link: "/base/ts/index" },
+            {
+              text: "日常开发遇到的问题",
+              link: "/base/ts/problems",
+            },
+          ],
+        },
+      ],
     },
   },
 };
