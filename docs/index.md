@@ -27,6 +27,9 @@ features:
 ---
 
 <style>
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
     :root {
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #f55a3e, #7c9eb7);
