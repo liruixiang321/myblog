@@ -66,6 +66,18 @@ module.exports = {
           ],
         },
       ],
+      "/base/css": [
+        {
+          text: "CSS学习🖊",
+          items: [
+            { text: "前言", link: "/base/css/index" },
+            {
+              text: "tailwindcss学习🖊",
+              link: "/base/css/tailwindcss",
+            },
+          ],
+        },
+      ],
     },
   },
 };
