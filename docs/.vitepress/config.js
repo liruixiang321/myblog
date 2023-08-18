@@ -21,10 +21,10 @@ module.exports = {
       {
         text: "vue3",
         items: [
+          { text: "前言", link: "/vue3/" },
           { text: "props", link: "/vue3/props" },
           { text: "pinia", link: "/vue3/pinia" },
           { text: "reactive", link: "/vue3/reactive" },
-          { text: "前言", link: "/vue3/" },
         ],
       },
       {
@@ -74,6 +74,18 @@ module.exports = {
             {
               text: "tailwindcss学习🖊",
               link: "/base/css/tailwindcss",
+            },
+          ],
+        },
+      ],
+      "base/js": [
+        {
+          text: "JS学习",
+          items: [
+            { text: "前言", link: "/base/js/index" },
+            {
+              text: "改善代码风格",
+              link: "/base/js/badCode",
             },
           ],
         },
