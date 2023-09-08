@@ -513,6 +513,7 @@ Pull Request 是一个代码审查工具，它允许开发人员创建一个 Pul
 第三步，在项目的 Settings 页面，我们可以设置标签。标签是用来对 PR 进行分类的，例如使用enhancement表示功能开发，使用bug表示 Bug 修改。如果你的项目由多团队同时开发，我们还会为每个产品团队都建立一个标签，这样就能清楚地知道这个 PR 来自那个产品团队了。
 
 ------
+
 ### 总结
 
 ![Alt text](image-8.png)
@@ -524,4 +525,3 @@ Pull Request 是一个代码审查工具，它允许开发人员创建一个 Pul
 - [ios架构与开发第二课 代码规范管理与自动化构建](https://blog.csdn.net/fegus/article/details/124624399)
 
 - [GitHub 工作流](https://guides.github.com/introduction/flow/)
-
