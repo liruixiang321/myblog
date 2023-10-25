@@ -87,6 +87,10 @@ module.exports = {
               text: "改善代码风格",
               link: "/base/js/badCode",
             },
+            {
+              text: "prefer-const",
+              link: "/base/js/whyPreferConst",
+            },
           ],
         },
       ],
