@@ -217,3 +217,11 @@ jobs:
 复制到ACTION_SECRET.
 
 再重新执行项目的action就好了。
+
+2023/10/25
+
+后续我再进行push并执行action时，会报密码和用户名错误，remote: Invalid username or password. fatal: Authentication failed for `https://github.com`...,后来发现原因时token过时了，所以解决方法是：
+
+- 去`github -> setting -> developer settings -> personal access token`.
+- 生成一个新的token 生成新的token,可以自定义他的有效期。
+- 复制token，在需要输入密码的位置，粘贴token即可。
