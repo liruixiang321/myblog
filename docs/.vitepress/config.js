@@ -94,6 +94,19 @@ module.exports = {
           ],
         },
       ],
+      "weeks/": [
+        {
+          text: "周报📅",
+          items: [{ text: "每周总结", link: "/weeks/index" }],
+        },
+        {
+          text: "入职以来几个月的一些工作上的总结",
+          items: [
+            { text: "api方案", link: "/weeks/api管理方案" },
+            { text: "拒绝代码屎山", link: "/weeks/拒绝代码屎山" },
+          ],
+        },
+      ],
     },
   },
 };
