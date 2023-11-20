@@ -1,0 +1,219 @@
+# 前端监控平台
+
+## 埋点
+
+使用第三方或自己开发相应的数据系统，进行用户行为数据或其它信息数据的收集。说白点，就是通过技术手段偷偷的监控用户在我们产品上的行为
+
+### 埋点方式
+
+#### 无埋点
+
+在产品中植入SDK,通过界面配置的方式对关键的行为进行定义，完成埋点采集，一般都是通过第三方统计工具，如：友盟、神策、百度统计、诸葛IO等。
+
+#### 前端代码埋点
+
+前端埋点与全埋点类似，也需要嵌入SDK，不同的是对于每个事件行为都需要调用SDK代码，传入必要的事件名，属性参数等等，然后发到后台数据服务器。
+前端埋点适用于：其他非关键业务量或不需要请求服务器的行为，能记录用户绝大多数的操作行为
+
+### 埋点实现
+
+实例：https://blog.csdn.net/luoluoxx0115/article/details/120714272
+
+## 性能数据采集
+
+SAP页面加载模型
+![Alt text](./jiankongimg/sapLoadimg.png)
+最初我们可以使用window。performance.timing来获取加载过程中模型的各个阶段的消耗时间。
+
+``` js
+
+// window.performance.timing 各字段说明
+{
+    navigationStart,  // 同一个浏览器上下文中，上一个文档结束时的时间戳。如果没有上一个文档，这个值会和 fetchStart 相同。
+    unloadEventStart,  // 上一个文档 unload 事件触发时的时间戳。如果没有上一个文档，为 0。
+    unloadEventEnd, // 上一个文档 unload 事件结束时的时间戳。如果没有上一个文档，为 0。
+    redirectStart, // 表示第一个 http 重定向开始时的时间戳。如果没有重定向或者有一个非同源的重定向，为 0。
+    redirectEnd, // 表示最后一个 http 重定向结束时的时间戳。如果没有重定向或者有一个非同源的重定向，为 0。
+    fetchStart, // 表示浏览器准备好使用 http 请求来获取文档的时间戳。这个时间点会在检查任何缓存之前。
+    domainLookupStart, // 域名查询开始的时间戳。如果使用了持久连接或者本地有缓存，这个值会和 fetchStart 相同。
+    domainLookupEnd, // 域名查询结束的时间戳。如果使用了持久连接或者本地有缓存，这个值会和 fetchStart 相同。
+    connectStart, // http 请求向服务器发送连接请求时的时间戳。如果使用了持久连接，这个值会和 fetchStart 相同。
+    connectEnd, // 浏览器和服务器之前建立连接的时间戳，所有握手和认证过程全部结束。如果使用了持久连接，这个值会和 fetchStart 相同。
+    secureConnectionStart, // 浏览器与服务器开始安全链接的握手时的时间戳。如果当前网页不要求安全连接，返回 0。
+    requestStart, // 浏览器向服务器发起 http 请求(或者读取本地缓存)时的时间戳，即获取 html 文档。
+    responseStart, // 浏览器从服务器接收到第一个字节时的时间戳。
+    responseEnd, // 浏览器从服务器接受到最后一个字节时的时间戳。
+    domLoading, // dom 结构开始解析的时间戳，document.readyState 的值为 loading。
+    domInteractive, // dom 结构解析结束，开始加载内嵌资源的时间戳，document.readyState 的状态为 interactive。
+    domContentLoadedEventStart, // DOMContentLoaded 事件触发时的时间戳，所有需要执行的脚本执行完毕。
+    domContentLoadedEventEnd,  // DOMContentLoaded 事件结束时的时间戳
+    domComplete, // dom 文档完成解析的时间戳， document.readyState 的值为 complete。
+    loadEventStart, // load 事件触发的时间。
+    loadEventEnd // load 时间结束时的时间。
+}
+```
+
+后来window.performance.timing被废除，通过PerfomanceObserve来获取。
+
+## 用户行为数据采集
+
+用户行为：页面路有变化，鼠标点击，资源加载，接口调用，代码报错等
+
+### 设计类
+
+``` js
+
+// 创建用户行为类
+class Breadcrumb {
+  // maxBreadcrumbs控制上报用户行为的最大条数
+  maxBreadcrumbs = 20;
+  // stack 存储用户行为
+  stack = [];
+  constructor() {}
+  // 添加用户行为栈
+  push(data) {
+    if (this.stack.length >= this.maxBreadcrumbs) {
+      // 超出则删除第一条
+      this.stack.shift();
+    }
+    this.stack.push(data);
+    // 按照时间排序
+    this.stack.sort((a, b) => a.time - b.time);
+  }
+}
+
+let breadcrumb = new Breadcrumb();
+
+// 添加一条页面跳转的行为，从home页面跳转到about页面
+breadcrumb.push({
+  type: "Route",
+  form: '/home',
+  to: '/about'
+  url: "http://localhost:3000/index.html",
+  time: "1668759320435"
+});
+
+// 添加一条用户点击行为
+breadcrumb.push({
+  type: "Click",
+  dom: "<button id='btn'>按钮</button>",
+  time: "1668759620485"
+});
+
+// 添加一条调用接口行为
+breadcrumb.push({
+  type: "Xhr",
+  url: "http://10.105.10.12/monitor/open/pushData",
+  time: "1668760485550"
+});
+
+// 上报用户行为
+reportData({
+  uuid: "a6481683-6d2e-4bd8-bba1-64819d8cce8c",
+  stack: breadcrumb.getStack()
+});
+...
+```
+
+### 页面跳转
+
+在vue中的两种路由模式history和hash模式，history模式通过pushState和replaceState方法来改变路由还可以通过popState事件监听，hash模式是通过hashChange事件来监听url变化。所以改写以上两个方法或者监听hashChange事件进行上报。
+
+``` js
+// lastHref 前一个页面的路由
+let lastHref = document.location.href;
+function historyReplace() {
+  function historyReplaceFn(originalHistoryFn) {
+    return function(...args) {
+      const url = args.length > 2 ? args[2] : undefined;
+      if (url) {
+        const from = lastHref;
+        const to = String(url);
+        lastHref = to;
+        // 上报路由变化
+        reportData("routeChange", {
+          from,
+          to
+        });
+      }
+      return originalHistoryFn.apply(this, args);
+    };
+  }
+  // 重写pushState事件
+  replaceAop(window.history, "pushState", historyReplaceFn);
+  // 重写replaceState事件
+  replaceAop(window.history, "replaceState", historyReplaceFn);
+}
+
+function replaceAop(source, name, fn) {
+  if (source === undefined) return;
+  if (name in source) {
+    var original = source[name];
+    var wrapped = fn(original);
+    if (typeof wrapped === "function") {
+      source[name] = wrapped;
+    }
+  }
+}
+```
+
+### 资源加载
+
+![Alt text](./jiankongimg/sourceLoad.png)
+瀑布图展现了浏览器为渲染网页而加载的所有的资源，包括加载的顺序和每个资源的加载时间
+
+分析这些资源是如何加载的, 可以帮助我们了解究竟是什么原因拖慢了网页，从而采取对应的措施来提升网页速度
+
+``` js
+// PerformanceResourceTiming 各字段说明
+{
+  connectEnd, // 表示浏览器完成建立与服务器的连接以检索资源之后的时间
+  connectStart, // 表示浏览器开始建立与服务器的连接以检索资源之前的时间
+  decodedBodySize, // 表示在删除任何应用的内容编码之后，从*消息主体*的请求（HTTP 或缓存）中接收到的大小（以八位字节为单位）
+  domainLookupEnd, // 表示浏览器完成资源的域名查找之后的时间
+  domainLookupStart, // 表示在浏览器立即开始资源的域名查找之前的时间
+  duration, // 返回一个timestamp，即 responseEnd 和 startTime 属性的差值
+  encodedBodySize, // 表示在删除任何应用的内容编码之前，从*有效内容主体*的请求（HTTP 或缓存）中接收到的大小（以八位字节为单位）
+  entryType, // 返回 "resource"
+  fetchStart, // 表示浏览器即将开始获取资源之前的时间
+  initiatorType, // 代表启动性能条目的资源的类型，如 PerformanceResourceTiming.initiatorType 中所指定
+  name, // 返回资源 URL
+  nextHopProtocol, // 代表用于获取资源的网络协议
+  redirectEnd, // 表示收到上一次重定向响应的发送最后一个字节时的时间
+  redirectStart, // 表示上一次重定向开始的时间
+  requestStart, // 表示浏览器开始向服务器请求资源之前的时间
+  responseEnd, // 表示在浏览器接收到资源的最后一个字节之后或在传输连接关闭之前（以先到者为准）的时间
+  responseStart, // 表示浏览器从服务器接收到响应的第一个字节后的时间
+  secureConnectionStart, // 表示浏览器即将开始握手过程以保护当前连接之前的时间
+  serverTiming, // 一个 PerformanceServerTiming 数组，包含服务器计时指标的PerformanceServerTiming 条目
+  startTime, // 表示资源获取开始的时间。该值等效于 PerformanceEntry.fetchStart
+  transferSize, // 代表所获取资源的大小（以八位字节为单位）。该大小包括响应标头字段以及响应有效内容主体
+  workerStart // 如果服务 Worker 线程已经在运行，则返回在分派 FetchEvent 之前的时间戳，如果尚未运行，则返回在启动 Service Worker 线程之前的时间戳。如果服务 Worker 未拦截该资源，则该属性将始终返回 0。
+}
+```
+
+如果我们只关注首页资源，我们可以在window.onload事件中去收集。
+如果要收集所有的资源，需要通过定时器反复地去收集，并且在一轮收集结束后，通过调用 clearResourceTimings 将 performance entries 里的信息清空，避免在下一轮收集时取到重复的资源
+
+## 个性化指标
+
+### long task
+
+### memory内存
+
+performance.memory 可以显示此刻内存占用情况，它是一个动态值，其中：
+
+jsHeapSizeLimit 该属性代表的含义是：内存大小的限制。
+totalJSHeapSize 表示总内存的大小。
+usedJSHeapSize 表示可使用的内存的大小。
+
+通常，usedJSHeapSize 不能大于 totalJSHeapSize，如果大于，有可能出现了内存泄漏
+
+### 首屏加载时间
+
+计算：
+1）利用MutationObserver监听document对象，每当dom变化时触发该事件
+2）判断监听的dom是否在首屏内，如果在首屏内，将该dom放到指定的数组中，记录下当前dom变化的时间点
+3）在MutationObserver的callback函数中，通过防抖函数，监听document.readyState状态的变化
+4）当document.readyState === 'complete'，停止定时器和 取消对document的监听
+5）遍历存放dom的数组，找出最后变化节点的时间，用该时间点减去performance.timing.navigationStart 得出首屏的加载时间
