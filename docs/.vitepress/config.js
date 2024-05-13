@@ -16,6 +16,7 @@ module.exports = {
           { text: "css", link: "/base/css/" },
           { text: "js", link: "/base/js/" },
           { text: "ts", link: "/base/ts/" },
+          { text: "前端监控", link: "/artworks/jiankong" },
         ],
       },
       {
@@ -36,6 +37,10 @@ module.exports = {
         link: "/weeks/",
       },
       {
+        text: "好文收藏",
+        link: "/article/",
+      },
+      {
         text: "Leetcode",
         link: "/leetcode/",
       },
@@ -50,8 +55,12 @@ module.exports = {
           items: [{ text: "建站记录", link: "/artworks/vitepressblog" }],
         },
         {
-          text: "我的开源项目",
-          items: [{ text: "...1", link: "/work/opensource" }],
+          text: "我的个人项目",
+          items: [
+            { text: "组件库封装", link: "/artworks/components" },
+            { text: "简历自制", link: "/artworks/resume" },
+            { text: "前端监控实践", link: "/artworks/femonitor" },
+          ],
         },
       ],
       "/base/ts": [
@@ -104,6 +113,15 @@ module.exports = {
           items: [
             { text: "api方案", link: "/weeks/api管理方案" },
             { text: "拒绝代码屎山", link: "/weeks/拒绝代码屎山" },
+          ],
+        },
+      ],
+      article: [
+        {
+          text: "好文收藏",
+          items: [
+            { text: "前言", link: "/article/index" },
+            { text: "技术", link: "/article/tech" },
           ],
         },
       ],

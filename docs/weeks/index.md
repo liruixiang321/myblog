@@ -260,7 +260,7 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
 
 ```vue
   <CollapseContainer title="IconIfy 组件使用" class="my-5">
-      <div class="flex justify-around flex-wrap">
+      <div class="flex flex-wrap justify-around">
         <Icon icon="ion:layers-outline" :size="30" />
         <Icon icon="ion:bar-chart-outline" :size="30" />
         <Icon icon="ion:tv-outline" :size="30" />
@@ -525,3 +525,78 @@ Pull Request 是一个代码审查工具，它允许开发人员创建一个 Pul
 - [ios架构与开发第二课 代码规范管理与自动化构建](https://blog.csdn.net/fegus/article/details/124624399)
 
 - [GitHub 工作流](https://guides.github.com/introduction/flow/)
+
+## 面试周（通过这个来总结一下面试的要点）
+
+对第三方组件的封装(属性,插槽,ref向外暴漏)
+[第三方组件二次封装方法](https://juejin.cn/post/7275261996860866615?searchId=202405091624440FD748DD8BFC549A1ADA)
+
+[实例](https://juejin.cn/post/7166068828202336263?searchId=202405091624440FD748DD8BFC549A1ADA)
+
+
+心得:除了我们需要封装的功能外，我们不应该改变原有组件的接口，即保持原有组件提供的接口（属性、方法、事件、插槽）不变。
+
+
+
+### 对elForm的二次封装
+
+1. 首先useForm的封装：主要功能就是返回一个register和form上的一些方法，这些方法除了elForm自带的方法还有一些自定义的方法。
+操作方法包括：setProps 动态设置表单属性，validate 对整个表单作验证，resetFields 对整个表单进行重置，将所有字段值重置为初始值并移除校验结果，clearValidate 清理指定字段的表单验证信息，validateField 对部分表单字段进行校验的方法，scrollToField 滚动到指定表单字段。
+
+### 下拉可输入
+
+思路:利用一个下拉框和输入框进行组合,下拉框作为外层的主要组件,接受到父组件传来的所有属性和参数.在触发输入框时,要把下拉框此时绑定的值传给输入框,并且要手动触发输入框fcous值,在输入结束后,触发onblur事件或者clear事件时(本质上是update事件),触发下拉框的update:modal事件,并将其值传到外层的父组件.
+注意点:1.要将外层父组件传过来的属性全都拿到.
+
+```js
+   v-bind="getBindValue"
+    :class="[$attrs.class]"
+```
+
+通过这两句话可以拿到,
+2.要将该组件实例暴露出去,使其能从外部访问到他的方法
+
+### 树形组件的二次封装
+
+
+```js
+// 防抖函数
+//多次点击最后一次才进行生效
+function debonce(fn,delay)=>{
+    let timer = null;
+    return function(){
+        let arg = [...argument]
+         if(timer){
+        cleartimeout(timer)
+        timer = null
+        } 
+        timer = settimeout(()=>{
+        return  fn.apply(this,arg)
+        },delay)
+    }
+}
+
+// 节流函数
+// 多次点击,在规定事件内只触发一次
+function throtell(fn,delay){
+
+    let timer = null;
+    let before = new Date();
+
+    return function(){
+        let now = new Date()
+        // if(!timer){
+        //     timer = settimeout(()=>{
+        //         fn.apply(this,[...argument])
+        //     },delay)
+        // }
+        if(now-before>delay){
+            beform = new Date()
+          return  fn.apply(this,[...argument])
+        }else {
+            return ;
+        }
+    }
+
+}
+```
