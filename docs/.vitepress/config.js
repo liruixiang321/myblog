@@ -122,9 +122,11 @@ module.exports = {
           items: [
             { text: "前言", link: "/article/index" },
             { text: "技术", link: "/article/tech" },
+            { text: "玩具", link: "/article/player" },
           ],
         },
       ],
     },
+    socialLinks: [{ icon: "github", link: "https://github.com/liruixiang321" }],
   },
 };
