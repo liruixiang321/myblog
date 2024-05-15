@@ -4,6 +4,9 @@ module.exports = {
   description: "Just playing around.",
   themeConfig: {
     logo: "/1.png",
+    search: {
+      provider: "local",
+    },
     nav: [
       {
         text: "作品集",

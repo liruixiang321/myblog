@@ -25,7 +25,8 @@ features:
     title: 学习总结
     details: Vue3 leetcode...
 ---
-
+<HomePage></HomePage>
+<Sakura></Sakura>
 <style>
     :root {
   --vp-home-hero-name-color: transparent;
