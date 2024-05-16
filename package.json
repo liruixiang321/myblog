@@ -2,12 +2,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"
   },
   "devDependencies": {
+    "unocss": "^0.60.2",
     "vitepress": "^1.1.4",
     "vue": "^3.4.27"
   }
