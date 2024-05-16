@@ -5,7 +5,7 @@ hero:
   name: Lrx's的前端旅途
   text:
   tagline: 努力努力再努力💪！
-  image: /1.png
+  image: /avter.webp
   actions:
     - theme: brand
       text: 让我康康
