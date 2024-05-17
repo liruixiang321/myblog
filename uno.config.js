@@ -1,5 +1,10 @@
 // uno.config.ts
-import { defineConfig, presetUno } from "unocss";
+import {
+  defineConfig,
+  presetAttributify,
+  presetUno,
+  transformerDirectives,
+} from "unocss";
 
 export default defineConfig({
   // ...UnoCSS options
@@ -12,6 +17,7 @@ export default defineConfig({
     //   },
     // },
   },
-  presets: [presetUno()],
-  darkMode: "class",
+  presets: [presetUno(), presetAttributify()],
+
+  transformers: [transformerDirectives()],
 });
