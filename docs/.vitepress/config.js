@@ -21,22 +21,14 @@ export default defineConfig({
           { text: "css", link: "/base/css/" },
           { text: "js", link: "/base/js/" },
           { text: "ts", link: "/base/ts/" },
-          { text: "前端监控", link: "/artworks/jiankong" },
+          { text: "前端监控", link: "/base/jiankongimg/" },
         ],
       },
       {
         text: "vue3",
-        items: [
-          { text: "前言", link: "/vue3/" },
-          { text: "props", link: "/vue3/props" },
-          { text: "pinia", link: "/vue3/pinia" },
-          { text: "reactive", link: "/vue3/reactive" },
-        ],
+        link: "/vue3/",
       },
-      {
-        text: "需求杂症",
-        link: "/xuqiuzazhen/",
-      },
+
       {
         text: "每周总结",
         link: "/weeks/",
@@ -68,35 +60,28 @@ export default defineConfig({
           ],
         },
       ],
-      "/base/ts": [
+      "/base/": [
         {
-          text: "TS学习🖊",
+          text: "html",
           items: [
-            { text: "日常学习", link: "/base/ts/index" },
             {
-              text: "日常开发遇到的问题",
-              link: "/base/ts/problems",
+              text: "html",
+              link: "/base/html/",
             },
           ],
         },
-      ],
-      "/base/css": [
         {
           text: "CSS学习🖊",
           items: [
-            { text: "前言", link: "/base/css/index" },
             {
               text: "tailwindcss学习🖊",
               link: "/base/css/tailwindcss",
             },
           ],
         },
-      ],
-      "base/js": [
         {
           text: "JS学习",
           items: [
-            { text: "前言", link: "/base/js/index" },
             {
               text: "改善代码风格",
               link: "/base/js/badCode",
@@ -104,6 +89,24 @@ export default defineConfig({
             {
               text: "prefer-const",
               link: "/base/js/whyPreferConst",
+            },
+          ],
+        },
+        {
+          text: "TS学习🖊",
+          items: [
+            {
+              text: "日常开发遇到的问题",
+              link: "/base/ts/problems",
+            },
+          ],
+        },
+        {
+          text: "前端监控",
+          items: [
+            {
+              text: "前端监控平台",
+              link: "/base/jiankongimg/index",
             },
           ],
         },
@@ -131,6 +134,21 @@ export default defineConfig({
           ],
         },
       ],
+      vue3: [
+        {
+          text: "Vue3",
+          items: [
+            { text: "前言", link: "/vue3/index" },
+            { text: "props", link: "/vue3/props" },
+            { text: "pinia", link: "/vue3/pinia" },
+            { text: "reactive", link: "/vue3/reactive" },
+          ],
+        },
+      ],
+    },
+    footer: {
+      copyright: "Copyright © 2023-present lrx",
+      message: "inspired by easy-vitepress-blog",
     },
     socialLinks: [{ icon: "github", link: "https://github.com/liruixiang321" }],
   },

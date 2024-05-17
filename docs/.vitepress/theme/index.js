@@ -6,6 +6,7 @@ import sakura from "./components/Sakura.vue";
 import LinkCard from "./components/LinkCard.vue";
 import HomePage from "./components/HomePage.vue";
 import "./styles/vars.css";
+import "./styles/article.css";
 
 import { h } from "vue";
 /** @type {import('vitepress').Theme} */

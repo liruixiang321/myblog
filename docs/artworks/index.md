@@ -22,7 +22,7 @@ types:
 ---
 
 <script setup>
-import BlogArchive from '../.vitepress/theme/view/BlogArchiveSidebar.vue'
+import Project from '../.vitepress/theme/view/Project.vue'
 </script>
 
-<BlogArchive/>
+<Project/>

@@ -5,7 +5,7 @@
     <!-- 随机一言 -->
     <div
       @click="openLink()"
-      class="flex gap-2 py-2 mt-4 rounded-lg shadow-md bg-amber-100/80 dark:bg-amber-950/80"
+      class="stript flex gap-2 py-2 mt-4 rounded-lg shadow-md bg-amber-100/80 dark:bg-amber-950/80"
       v-if="quoteInfo.string"
     >
       <span class="self-start text-2xl">“</span>
@@ -47,3 +47,4 @@
       .catch(console.error);
   });
 </script>
+<style></style>
