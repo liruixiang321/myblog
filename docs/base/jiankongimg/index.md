@@ -22,7 +22,7 @@
 ## 性能数据采集
 
 SAP页面加载模型
-![Alt text](./jiankongimg/sapLoadimg.png)
+![Alt text](./sapLoadimg.png)
 最初我们可以使用window。performance.timing来获取加载过程中模型的各个阶段的消耗时间。
 
 ``` js
@@ -159,7 +159,7 @@ function replaceAop(source, name, fn) {
 
 ### 资源加载
 
-![Alt text](./jiankongimg/sourceLoad.png)
+![Alt text](./sourceLoad.png)
 瀑布图展现了浏览器为渲染网页而加载的所有的资源，包括加载的顺序和每个资源的加载时间
 
 分析这些资源是如何加载的, 可以帮助我们了解究竟是什么原因拖慢了网页，从而采取对应的措施来提升网页速度
