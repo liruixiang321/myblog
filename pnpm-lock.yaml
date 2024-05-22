@@ -5,12 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 devDependencies:
+  '@types/node':
+    specifier: ^20.12.12
+    version: 20.12.12
   unocss:
     specifier: ^0.60.2
     version: 0.60.2(postcss@8.4.38)(vite@5.2.11)
   vitepress:
     specifier: ^1.1.4
-    version: 1.1.4(@algolia/client-search@4.23.3)(postcss@8.4.38)(search-insights@2.13.0)
+    version: 1.1.4(@algolia/client-search@4.23.3)(@types/node@20.12.12)(postcss@8.4.38)(search-insights@2.13.0)
   vue:
     specifier: ^3.4.27
     version: 3.4.27
@@ -1003,6 +1006,12 @@ packages:
     resolution: {integrity: sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==, tarball: https://registry.npmmirror.com/@types/mdurl/-/mdurl-2.0.0.tgz}
     dev: true
 
+  /@types/node@20.12.12:
+    resolution: {integrity: sha512-eWLDGF/FOSPtAvEqeRAQ4C8LSA7M1I7i0ky1I8U7kD1J5ITyW3AsRhQrKVoWf5pFKZ2kILsEGJhsI9r93PYnOw==, tarball: https://registry.npmmirror.com/@types/node/-/node-20.12.12.tgz}
+    dependencies:
+      undici-types: 5.26.5
+    dev: true
+
   /@types/web-bluetooth@0.0.20:
     resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==, tarball: https://registry.npmmirror.com/@types/web-bluetooth/-/web-bluetooth-0.0.20.tgz}
     dev: true
@@ -1018,7 +1027,7 @@ packages:
       '@unocss/core': 0.60.2
       '@unocss/reset': 0.60.2
       '@unocss/vite': 0.60.2(vite@5.2.11)
-      vite: 5.2.11
+      vite: 5.2.11(@types/node@20.12.12)
     transitivePeerDependencies:
       - rollup
     dev: true
@@ -1216,7 +1225,7 @@ packages:
       chokidar: 3.6.0
       fast-glob: 3.3.2
       magic-string: 0.30.10
-      vite: 5.2.11
+      vite: 5.2.11(@types/node@20.12.12)
     transitivePeerDependencies:
       - rollup
     dev: true
@@ -1228,7 +1237,7 @@ packages:
       vite: ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 5.2.11
+      vite: 5.2.11(@types/node@20.12.12)
       vue: 3.4.27
     dev: true
 
@@ -2125,6 +2134,10 @@ packages:
       jiti: 1.21.0
     dev: true
 
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==, tarball: https://registry.npmmirror.com/undici-types/-/undici-types-5.26.5.tgz}
+    dev: true
+
   /unocss@0.60.2(postcss@8.4.38)(vite@5.2.11):
     resolution: {integrity: sha512-Cj1IXS+VZuiZtQxHn/ffAAN422gUusUEgF1RS83WyNB0kMsJyIxb9KK9N425QAvQvsKpL5GrZs5KoNtU3zGMog==, tarball: https://registry.npmmirror.com/unocss/-/unocss-0.60.2.tgz}
     engines: {node: '>=14'}
@@ -2157,7 +2170,7 @@ packages:
       '@unocss/transformer-directives': 0.60.2
       '@unocss/transformer-variant-group': 0.60.2
       '@unocss/vite': 0.60.2(vite@5.2.11)
-      vite: 5.2.11
+      vite: 5.2.11(@types/node@20.12.12)
     transitivePeerDependencies:
       - postcss
       - rollup
@@ -2175,7 +2188,7 @@ packages:
       picocolors: 1.0.1
     dev: true
 
-  /vite@5.2.11:
+  /vite@5.2.11(@types/node@20.12.12):
     resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==, tarball: https://registry.npmmirror.com/vite/-/vite-5.2.11.tgz}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -2203,6 +2216,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 20.12.12
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.17.2
@@ -2210,7 +2224,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitepress@1.1.4(@algolia/client-search@4.23.3)(postcss@8.4.38)(search-insights@2.13.0):
+  /vitepress@1.1.4(@algolia/client-search@4.23.3)(@types/node@20.12.12)(postcss@8.4.38)(search-insights@2.13.0):
     resolution: {integrity: sha512-bWIzFZXpPB6NIDBuWnS20aMADH+FcFKDfQNYFvbOWij03PR29eImTceQHIzCKordjXYBhM/TjE5VKFTUJ3EheA==, tarball: https://registry.npmmirror.com/vitepress/-/vitepress-1.1.4.tgz}
     hasBin: true
     peerDependencies:
@@ -2236,7 +2250,7 @@ packages:
       minisearch: 6.3.0
       postcss: 8.4.38
       shiki: 1.5.1
-      vite: 5.2.11
+      vite: 5.2.11(@types/node@20.12.12)
       vue: 3.4.27
     transitivePeerDependencies:
       - '@algolia/client-search'
