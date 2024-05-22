@@ -19,7 +19,7 @@
       <p
         class="flex-1 mt-2 leading-relaxed transition-all duration-300 text-black/60 dark:text-slate-500 dark:group-hover:text-white/80 group-hover:text-black"
       >
-        {{ post.frontmatter.desc }}
+        {{ post.frontmatter?.desc }}
       </p>
 
       <!-- tags -->
@@ -38,15 +38,13 @@
 </template>
 
 <script setup lang="ts">
-  import { type Post } from "../utils/types.js";
-  import { fileName2Title } from "../userConfig/translations.js";
-  import { useRouter } from "vitepress";
+  import { useRouter, withBase } from "vitepress";
 
   const router = useRouter();
   const { post, flow } = defineProps(["post", "flow"]);
 
   // 获取文章标题信息，使用用户自定义的标题或是 md 文件名称
-  const getTitle = (post: Post): string => {
+  const getTitle = (post): string => {
     const userTitle = post.frontmatter?.title;
     if (userTitle) return userTitle;
 
@@ -54,16 +52,17 @@
     const matches = url.match(/.*\/(.*.html)/);
     let fileName = matches && matches[1].replace(".html", "");
     // 如果匹配成功，返回匹配的部分作为标题，否则返回一个默认标题
-    if (fileName) return fileName2Title[fileName] || fileName;
+    if (fileName) return fileName;
     return "Error Title";
   };
 
   // 获取文章的前两个tag
-  const getTags = (post: Post) => {
-    const rawTagString: string = post.frontmatter.tags;
+  const getTags = (post) => {
+    const rawTagString: string = post.frontmatter?.tags || "随笔";
+
     return rawTagString ? rawTagString.split("/").slice(0, 2) : [];
   };
 
   // 打开文章链接
-  const openLink = (link: string) => router.go(link);
+  const openLink = (link: string) => router.go(withBase(link));
 </script>
