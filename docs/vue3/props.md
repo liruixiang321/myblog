@@ -1,3 +1,9 @@
+---
+updateTime: "2022-12-01 22:27"
+desc: '重学props,发现对Vue3的props掌握还是不够透彻,结合官方文档学习一下'
+tags: 'Vue3/props'
+---
+
 # props
 
 >props是用来接受父级组件传来的参数的选项，主要用来进行组件间的通信。

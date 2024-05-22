@@ -1,8 +1,13 @@
+---
+updateTime: "2023-12-01 22:27"
+desc: "在工作日常中如何改善你的烂代码"
+tags: "js/代码优化"
+---
+
 # 改变你的烂代码
 
 ## 一、变量的解构
 
-===
 
 这是我之前写的代码：
 ### 优化前
@@ -30,7 +35,6 @@ const App = (props)=>{
 
 ## 不靠谱的默认值
 
-===
 
 上面的代码还可以再优化一下：
 
@@ -42,13 +46,13 @@ const App = (props = {})=>{
 ```
 
 但是这样确实不对的：
->ES6内部使用严格相等运算符（`===`）判断一个变量是否有值。所以，如果对一个对象的属性值不严格等于`undefined`，默认值是不会生效的。
+>ES6内部使用严格相等运算符（``）判断一个变量是否有值。所以，如果对一个对象的属性值不严格等于`undefined`，默认值是不会生效的。
 
 所以当`props.data`为`null`，那么`const {name,name} = null`就会报错！
 
 ## 二、要注意数组方法只能数组调用
 
-===
+
 
 ### 优化前
 
@@ -75,7 +79,7 @@ const App = (props) => {
 
 ## 三、对象中不一定存在对应属性
 
-===
+
 
 ### 优化前
 
@@ -103,7 +107,7 @@ const App = (props) => {
 }
 ```
 
-`?`可选链操作符，虽然好用，但也不能滥用。`item?.name`会被编译成`item === null || item === void 0 ? void 0 : item.name`,滥用会导致编辑后的代码大小增大。
+`?`可选链操作符，虽然好用，但也不能滥用。`item?.name`会被编译成`item  null || item  void 0 ? void 0 : item.name`,滥用会导致编辑后的代码大小增大。
 
 
 ### 二次优化后
@@ -122,7 +126,7 @@ const App = (props) => {
 ```
 ## 四、对象的方法调用
 
-===
+
 
 ### 优化前
 
@@ -140,7 +144,7 @@ data变量可能不是对象，所以再调用对象的方法会报错。
 ``` js
 const _toString = Object.prototype.toString;
 const isPlainObject = (obj) => {
-  return _toString.call(obj) === '[object Object]';
+  return _toString.call(obj)  '[object Object]';
 }
 const App = (props) => {
   const { data } = props || {};
@@ -155,7 +159,7 @@ const App = (props) => {
 
 ## 六、async/await错误捕获
 
-===
+
 
 ### 优化前
 

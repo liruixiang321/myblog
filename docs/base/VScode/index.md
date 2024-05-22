@@ -1,3 +1,9 @@
+---
+updateTime: "2022-12-01 22:27"
+desc: '一些好用的VScode快捷命令'
+tags: 'VScode/解决方法'
+---
+
 ## 快捷命令
 
 進入蟬模式 ctrl+k z

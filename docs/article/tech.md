@@ -1,3 +1,10 @@
+---
+updateTime: "2024-05-22 15:47:44"
+desc: '使用vite搭建的vue3组件库，有详细的从零到一的组件库搭建记录，是一次很棒vite和vue3的工程化实践'
+tags: '外部文章/blog'
+---
+
+
 # 掘金,github,羽雀
 
 ## [组件库架子搭建](https://github.com/KamenRider41/Kamen-Design-Vite-Vue3/blob/master/%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95.md)

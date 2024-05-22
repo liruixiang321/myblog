@@ -1,3 +1,12 @@
+---
+
+updateTime: "2023-12-01 22:27"
+desc: "介绍了在let和const之间，建议优先使用const"
+tags: "js/代码优化"
+
+---
+
+
 # 为什么要首选const
 
 在let和const之间，建议优先使用const，尤其是在全局环境，不应该设置变量，只应设置常量。
