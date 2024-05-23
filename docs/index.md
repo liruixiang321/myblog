@@ -27,7 +27,9 @@ features:
 ---
 <HomePage></HomePage>
 <Sakura></Sakura>
-
+<script>
+import HomePage from '.vitepress/theme/components/HomePage.vue'
+</script>
 <style>
 
 </style>

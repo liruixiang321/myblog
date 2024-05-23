@@ -1,7 +1,7 @@
 <template>
   <div
     @click="openLink(post.url)"
-    class="relative py-4 mt-6 transition-all border rounded-lg cursor-pointer dark:border-transparent hover:border-indigo-800 break-inside-avoid-column bg-zinc-50/50 sm:pl-0 dark:bg-slate-800/80 first:mt-0 dark:hover:bg-sky-950/80 dark:hover:border-sky-300"
+    class="relative py-4 mt-6 transition-all border rounded-lg cursor-pointer dark:border-transparent hover:border-indigo-800 hover:border-solid break-inside-avoid-column bg-zinc-50/50 sm:pl-0 dark:bg-slate-800/80 first:mt-0 dark:hover:bg-sky-950/80 dark:hover:border-sky-300"
   >
     <!-- <p
         class="hidden pl-4 font-mono text-4xl sm:block text-sky-400/50 dark:text-slate-200/50"
@@ -28,7 +28,7 @@
           v-for="(tag, tagIndex) in getTags(post)"
           :key="tagIndex"
           :class="tagIndex >= 1 ? 'ml-2' : ''"
-          class="px-2 text-sm border rounded-full border-sky-400/80 dark:border-zinc-200 text-sky-400 dark:text-zinc-200"
+          class="px-2 text-sm border-solid rounded-full border-sky-400/80 dark:border-zinc-200 text-sky-400 dark:text-zinc-200"
         >
           {{ tag }}
         </p>

@@ -21,8 +21,9 @@ types:
 # flow: true
 ---
 
-<script setup>
-import Project from '../.vitepress/theme/view/Project.vue'
+<script>
+import HomePage from '../.vitepress/theme/components/HomePage.vue'
 </script>
 
-<Project/>
+
+<HomePage></HomePage>

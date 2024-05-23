@@ -1,5 +1,5 @@
 // .vitepress/theme/index.js
-import "uno.css";
+
 import DefaultTheme from "vitepress/theme";
 import MyLayout from "./MyLayout.vue";
 import sakura from "./components/Sakura.vue";
@@ -7,7 +7,7 @@ import LinkCard from "./components/LinkCard.vue";
 import HomePage from "./components/HomePage.vue";
 import "./styles/vars.css";
 import "./styles/article.css";
-
+import "uno.css";
 import { h } from "vue";
 /** @type {import('vitepress').Theme} */
 export default {

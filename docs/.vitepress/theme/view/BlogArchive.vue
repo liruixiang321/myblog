@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
   import { useData } from "vitepress";
-  import { data as posts } from "../utils/article.data.js";
+  import { data as posts } from "../utils/post.data.ts";
   //   import PostCard from "./BlogArchivePostCard.vue";
   import Sidebar from "./BlogArchiveSidebar.vue";
 
