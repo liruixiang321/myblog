@@ -24,7 +24,7 @@
         class="order-2 pt-6 lg:pt-0 lg:order-1 lg:mt-0"
       >
         <h1
-          class="pb-2 text-3xl font-bold transition-all duration-300 border-b-4 border-sky-500 dark:border-sky-700 w-fit hover:pr-6"
+          class="pb-2 text-3xl font-bold transition-all duration-300 border-b-4 border-b-solid border-sky-500 dark:border-sky-700 w-fit hover:pr-6"
         >
           ✨ 近期更新
         </h1>
@@ -51,8 +51,7 @@
   import { data as posts } from "../utils/post.data";
   import PostCard from "../view/BlogArchivePostCard.vue";
   import Sidebar from "../view/BlogArchiveSidebar.vue";
-  console.log(posts, "md文件");
-
+  import WeatherCard from "./WeatherCard.vue";
   // 获取标题 / 分类 / 推荐阅读
   const { frontmatter: pageData, theme } = useData();
   const { hero, types, features, flow } = pageData.value;

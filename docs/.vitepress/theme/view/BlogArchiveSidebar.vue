@@ -2,10 +2,13 @@
   <div class="lg:sticky lg:top-20">
     <!-- 类别 -->
 
+    <div>
+      <WeatherCard></WeatherCard>
+    </div>
     <!-- 随机一言 -->
     <div
       @click="openLink()"
-      class="stript flex gap-2 py-2 mt-4 rounded-lg shadow-md bg-amber-100/80 dark:bg-amber-950/80"
+      class="flex gap-2 py-2 mt-4 rounded-lg shadow-md stript bg-amber-100/80 dark:bg-amber-950/80"
       v-if="quoteInfo.string"
     >
       <span class="self-start text-2xl">“</span>
@@ -25,18 +28,20 @@
     </div> -->
   </div>
 </template>
-
 <script setup lang="ts">
   import { onMounted, reactive } from "vue";
   import { useRouter } from "vitepress";
+  import WeatherCard from "../components/WeatherCard.vue";
 
   const router = useRouter();
+
   // 随机一言
   const quoteInfo = reactive({
     string: "",
     from: "",
   });
   const openLink = () => router.go("/myblog/artworks/jiankong");
+
   onMounted(async () => {
     fetch("https://v1.hitokoto.cn?c=a&c=b&c=d&c=i&min_length=10")
       .then((response) => response.json())

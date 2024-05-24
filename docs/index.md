@@ -25,11 +25,9 @@ features:
     title: 学习总结
     details: Vue3 leetcode...
 ---
-<HomePage></HomePage>
+
 <Sakura></Sakura>
-<script>
-import HomePage from '.vitepress/theme/components/HomePage.vue'
-</script>
+
 <style>
 
 </style>

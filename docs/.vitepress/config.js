@@ -39,8 +39,8 @@ export default defineConfig({
         link: "/article/",
       },
       {
-        text: "Leetcode",
-        link: "/leetcode/",
+        text: "归档",
+        link: "/归档/",
       },
     ],
     // sideber以对象的形式配置的话每个sidebar都是独立的 如果以数组的形式配置那么侧边栏是公共的 进入其他子页面都可以看到
