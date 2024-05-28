@@ -30,3 +30,9 @@ tags: '外部文章/blog'
 <LinkCard link="https://github.com/harlan-zw/harlanzw.com-vitepress/tree/master" desc="vitepress主题"></LinkCard>
 
 一个nuxt的contributor的博客主题，使用了windicss,感觉很好看，希望可以学习一下。
+
+## 前端监控系统调研
+
+<LinkCard link = "https://juejin.cn/post/7234057613775536185?utm_source=gold_browser_extension#heading-12" desc = "前端监控系统Sentry企业级实战"></LinkCard>
+
+博主对市面上的监控系统进行了对比，我需要思考那些是我现在需要，那些功能是我现在不需要的。
