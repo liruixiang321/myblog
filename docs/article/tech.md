@@ -35,4 +35,5 @@ tags: '外部文章/blog'
 
 <LinkCard link = "https://juejin.cn/post/7234057613775536185?utm_source=gold_browser_extension#heading-12" desc = "前端监控系统Sentry企业级实战"></LinkCard>
 
+<LinkCard link = "https://tech.youzan.com/mobileskynet/" desc = "报警策略设计"></LinkCard>
 博主对市面上的监控系统进行了对比，我需要思考那些是我现在需要，那些功能是我现在不需要的。
