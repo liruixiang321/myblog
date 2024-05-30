@@ -226,3 +226,29 @@ usedJSHeapSize 表示可使用的内存的大小。
 3）在MutationObserver的callback函数中，通过防抖函数，监听document.readyState状态的变化
 4）当document.readyState === 'complete'，停止定时器和 取消对document的监听
 5）遍历存放dom的数组，找出最后变化节点的时间，用该时间点减去performance.timing.navigationStart 得出首屏的加载时间
+
+### 白屏时间
+
+### 用户可交互时间
+
+### 总下载时间
+
+### DNS解析时间
+
+### TCP连接时间
+
+### HTTP请求时间
+
+### HTTP响应时间
+
+### pv
+
+### uv
+
+### 用户行为统计
+
+### 界面js异常及报错
+
+### 用户设备信息: ip、浏览器、操作系统等
+
+## 市面上成熟的方案

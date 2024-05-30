@@ -33,7 +33,6 @@ export { data };
 
 export default createContentLoader("/**/*.md", {
   transform(raw): Post[] {
-    console.log(raw);
     const res = raw
       .map(({ url, frontmatter }) => ({
         title: frontmatter.title,
@@ -43,7 +42,7 @@ export default createContentLoader("/**/*.md", {
       }))
       .filter((post) => /.html/.test(post.url))
       .sort((a, b) => b.date.time - a.date.time);
-    console.log(res);
+
     return res;
   },
 });
