@@ -37,3 +37,9 @@ tags: '外部文章/blog'
 
 <LinkCard link = "https://tech.youzan.com/mobileskynet/" desc = "报警策略设计"></LinkCard>
 博主对市面上的监控系统进行了对比，我需要思考那些是我现在需要，那些功能是我现在不需要的。
+
+## 前端大屏响应式解决方案
+
+<LinkCard link = "https://juejin.cn/post/7231089453694009404" desc = "可视化大屏：autofit.js 一行搞定自适应"></LinkCard>
+
+个人觉得是目前效果比较好且最简单的自适应解决方案，也对公司的项目的进行应用，效果不错。
