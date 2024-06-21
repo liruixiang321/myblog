@@ -143,6 +143,7 @@ export default defineConfig({
             { text: "props", link: "/vue3/props" },
             { text: "pinia", link: "/vue3/pinia" },
             { text: "reactive", link: "/vue3/reactive" },
+            { text: "react", link: "/vue3/react" },
           ],
         },
       ],
