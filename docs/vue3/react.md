@@ -151,3 +151,16 @@ setState 合并时自动会进行合并，取决于传递的是对象还是函�
 ## react 更新流程
 
 ![更新流程](../public/vue3/react/image.png)
+
+diffing 算法：感觉和 vue 的 diff 算法一样。
+
+### PureComponent
+
+当通过比较新旧 props 和 state 前后保持不变时，该组件不会因为父组件的重新渲染而跟着重新渲染。优化了渲染性能。
+
+但是 react18 建议使用函数式组件来代替类式组件,也就意味着这种需要新的方式来代替,也就是 memeo 方式的声明组件。
+
+> [!TIP]
+> 与 PureComponent 不同，memo 不会比较新旧 state。在函数组件中，即使没有 memo，调用具有相同 state 的 set 函数，默认已经阻止了重新渲染。
+
+### memo
