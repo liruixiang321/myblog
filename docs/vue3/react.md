@@ -1,5 +1,5 @@
 ---
-updateTime: "2024-06-19 15:05:53"
+updateTime: "2024-07-03 14:26:05"
 desc: "一直都想学习一下react但是都有别的事情，知道最近遇到了一些场景使用vue的template语法写起来比较吃力，再了解jsx之后觉得有必要学些一下了"
 tags: "react/学习"
 ---
@@ -113,3 +113,41 @@ npm start
 > 您可以通过在 npm 上搜索“cra-template-\*”来找到可用模板的列表。
 
 也可以自己自定义模板进行发布
+
+## react 中的插槽
+
+1.通过 props 直接将 dom 传递到父组件中。
+
+2.使用父组件中的 this.props.children 数组。
+
+## 跨组件通信
+
+1.使用 context。 2.使用 event。
+
+## setState
+
+### 为什么使用
+
+### 异步更新
+
+为什么要设计成异步更新？
+
+redux 作者 gaearon Dan 在社区讨论下做出了[回应](https://github.com/facebook/react/issues/11527#issuecomment-360199710),大致意思就是：
+
+- setState 设计为异步，可以显著的提升性能;口 如果每次调用 setState 都进行一次更新，那么意味着 render 函数会被频繁调用，界面重新渲染，这样效率是很低的口 最好的办法应该是获取到多个更新，之后进行批量更新;
+- 如果同步更新了 state，但是还没有执行 render 函数，那么 state 和 props 不能保持同步口 state 和 props 不能保持一致性，会在开发中产生很多的问题;
+
+但是一定就是异步吗？
+
+其实分成两种情况：
+
+- 在组件生命周期或 React 合成事件中，setState 是异步;
+- 在 setTimeout 或者原生 dom 事件中，setState 是同步;
+
+### 使用
+
+setState 合并时自动会进行合并，取决于传递的是对象还是函数。
+
+## react 更新流程
+
+![更新流程](../public/vue3/react/image.png)
