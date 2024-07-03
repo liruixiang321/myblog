@@ -1,4 +1,4 @@
----
+<!-- ---
 layout: page
 sidebar: false
 
@@ -22,8 +22,5 @@ types:
 ---
 
 <script>
-import HomePage from '../.vitepress/theme/components/HomePage.vue'
-</script>
 
-
-<HomePage></HomePage>
+</script> -->

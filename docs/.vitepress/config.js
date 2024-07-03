@@ -31,7 +31,7 @@ export default defineConfig({
       },
 
       {
-        text: "每周总结",
+        text: "技术总结",
         link: "/weeks/",
       },
       {
@@ -114,14 +114,19 @@ export default defineConfig({
       ],
       "weeks/": [
         {
-          text: "周报📅",
-          items: [{ text: "每周总结", link: "/weeks/index" }],
-        },
-        {
-          text: "入职以来几个月的一些工作上的总结",
+          text: "一些技术上的总结",
           items: [
             { text: "api方案", link: "/weeks/api管理方案" },
             { text: "拒绝代码屎山", link: "/weeks/拒绝代码屎山" },
+            { text: "入职第一周工作计划", link: "/weeks/本周工作计划" },
+            { text: "换炉算法", link: "/weeks/换炉算法" },
+            { text: "死锁问题", link: "/weeks/死锁问题" },
+            { text: "Iconify上手体验", link: "/weeks/Iconify上手体验" },
+            { text: "github与git的使用", link: "/weeks/github与git的使用" },
+            {
+              text: "watchEffect的执行时机",
+              link: "/weeks/watchEffect的执行时机",
+            },
           ],
         },
       ],
