@@ -1,7 +1,8 @@
----
+yy---
 updateTime: "2024-07-03 14:26:05"
-desc: "一直都想学习一下react但是都有别的事情，知道最近遇到了一些场景使用vue的template语法写起来比较吃力，再了解jsx之后觉得有必要学些一下了"
+desc: "一直都想学习一下 react 但是都有别的事情，知道最近遇到了一些场景使用 vue 的 template 语法写起来比较吃力，再了解 jsx 之后觉得有必要学些一下了"
 tags: "react/学习"
+
 ---
 
 # react
@@ -164,3 +165,7 @@ diffing 算法：感觉和 vue 的 diff 算法一样。
 > 与 PureComponent 不同，memo 不会比较新旧 state。在函数组件中，即使没有 memo，调用具有相同 state 的 set 函数，默认已经阻止了重新渲染。
 
 ### memo
+
+### ref
+
+### HOC
