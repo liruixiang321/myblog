@@ -1,8 +1,7 @@
-yy---
-updateTime: "2024-07-03 14:26:05"
+---
+updateTime: "2024-07-17 22:12:49"
 desc: "一直都想学习一下 react 但是都有别的事情，知道最近遇到了一些场景使用 vue 的 template 语法写起来比较吃力，再了解 jsx 之后觉得有必要学些一下了"
 tags: "react/学习"
-
 ---
 
 # react
@@ -168,4 +167,35 @@ diffing 算法：感觉和 vue 的 diff 算法一样。
 
 ### ref
 
+ref 的值根据节点的类型而有所不同:
+
+- 当 ref 属性用于 HTML 元素时,构造函数中使用 React.createRef() 创建的 ref 接收底层 DOM 元素作为其 current 属性口
+- 当 ref 属性用于自定义 class 组件时，ref 对象接收组件的挂载实例作为其 current 属性;
+- 你不能在函数组件上使用 ref 属性，因为他们没有实例;可以使用 React.forward 来代替；
+
 ### HOC
+
+传入组件，返回组件,增强 props
+
+> [!TIP]
+> 只有在类组件中才可以使用生命周期函数
+
+### 全局事件传递
+
+eventBus
+
+### Portals
+
+类似于 vue 的 teleport 传送门
+
+### strictMode
+
+1.检查不安全的生命周期。
+
+2.过时的 ref API。
+
+3.检查意外的副作用：
+
+- 这个组件的 constructor 会被调用两次。
+- 这是严格模式下故意进行的操作，为了开发者查看逻辑代码多次调用时是否会产生副作用。
+- 在生产环境下不会调用两次。
