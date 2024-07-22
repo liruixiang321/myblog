@@ -122,10 +122,14 @@ export default defineConfig({
             { text: "换炉算法", link: "/weeks/换炉算法" },
             { text: "死锁问题", link: "/weeks/死锁问题" },
             { text: "Iconify上手体验", link: "/weeks/Iconify上手体验" },
-            { text: "github与git的使用", link: "/weeks/github与git的使用" },
+            { text: "github与git的使用", link: "/weeks/git与github的使用" },
             {
               text: "watchEffect的执行时机",
-              link: "/weeks/watchEffect的执行时机",
+              link: "/weeks/watchEffect执行时机",
+            },
+            {
+              text: "react中的css方案",
+              link: "/weeks/react中的css方案",
             },
           ],
         },
