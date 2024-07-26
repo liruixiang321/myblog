@@ -199,3 +199,148 @@ eventBus
 - 这个组件的 constructor 会被调用两次。
 - 这是严格模式下故意进行的操作，为了开发者查看逻辑代码多次调用时是否会产生副作用。
 - 在生产环境下不会调用两次。
+
+## redux
+
+### 三大原则
+
+- 单一数据源：
+  - 整个应用程序的 `state` 被存储在一颗 `object tree` 中,并且这个 `object tree` 只存储在一个 store 中
+  - `Redux` 并没有强制让我们不能创建多个 `Store`，但是那样做并不利于数据的维护;
+  - 单一的数据源可以让整个应用程序的 state 变得方便维护、追踪、修改
+- state 是只读的
+  - 唯一修改 `State` 的方法一定是触发 `action`，不要试图在其他地方通过任何的方式来修改 `State`:
+  - 这样就确保了 View 或网络请求都不能直接修改 `state`，它们只能通过 `action` 来描述自己想要如何修改 `state`
+  - 这样可以保证所有的修改都被集中化处理，并且按照严格的顺序来执行，所以不需要担心 r`ace condition`(竟态)的问题:
+- 使用纯函数来进行修改
+  - 通过 `reducer` 将旧 `state` 和 `actions` 联系在一起，并且返回一个新的 `State`
+  - 随着应用程序的复杂度增加，我们可以将 `reducer` 拆分成多个小的 `reducers`，分别操作不同 `state tree` 的一部分
+  - 但是所有的 `reducer` 都应该是纯函数，不能产生任何的副作用
+
+### 目录结构划分
+
+![redux目录划分](../public/vue3/react/redux目录.png)
+
+将 redux 划分为 actionCreator(所有的 action 定义,包括 type 和传入的参数)、constans(包括 action 中的 type 等)、index.js(调用 reducer 创建 store 实例),reducer(初始化 state，定义每个 type 对应的逻辑代码即 reducer 的定义，传入 state 以及 action 并且返回新的 state，确保不产生任何副作用)。
+
+修改状态时直接调用 store 的 dispatch 方法，并传入 action
+
+### 如何优雅地在组件中使用 redux
+
+将引入 store 的代码抽离出去，以 HOC 的方式添加到组件中。下面是封装的 connect.js 文件
+
+```jsx
+import React, { PureComponent } from "react";
+
+export function connect(mapStateToProps, mapDispatchToProps) {
+  return function enhance(wrapperComponent) {
+    return class enhanceHOC extends PureComponent {
+      constructor(props) {
+        super(props);
+        this.state = { storeState: mapStateToProps(store.getState()) };
+      }
+
+      componentDidMount() {
+        this.discribe = store.subscribe(() => {
+          this.setState({
+            storeState: mapStateToProps(store.getState()),
+          });
+        });
+      }
+      componentWillUnmount() {
+        this.discribe();
+      }
+      render() {
+        return (
+          <div>
+            <wrapperComponent
+              {...props}
+              {...mapDispatchToProps(store.dispatch())}
+              {...mapStateToProps(store.getState())}
+            ></wrapperComponent>
+          </div>
+        );
+      }
+    };
+  };
+}
+```
+
+在要引入的组件 home 中这样写:
+
+```jsx
+
+import React, { PureComponent } from "react";
+
+export default class home extends PureComponent {
+  render() {
+    return (
+      <div>
+        home
+        <h2>当前计数{this.state.counter}</h2>
+        <button onClick={(e) => this.increment()}>+1</button>
+        <button onClick={(e) => this.decrement(5)}>-5</button>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  counter: state.counter,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  increment: function () {
+    dispatch(incAction);
+  },
+  decrement: function (num) {
+    dispatch(derAction(num));
+  },
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(home)
+
+```
+
+这样我们仅仅为每个组件添加了 action 这个依赖,其他的部分全部在 connect 这个函数中。
+
+### redux-thunk
+
+使用中间件可以在 dispatch 发送网络请求
+
+1.安装 redux-thunk `yarn add redux-thunk`  
+2.在创建 store 时传入应用了 middleware 的 enhance 函数
+
+- 通过 applyMiddleware 来结合多个 Middleware,返回一个 enhancer
+- 将 enhancer 作为第二个参数传入到 createStore 中。
+
+```jsx
+import { createStore, applyMiddleware, compose } from "redux";
+import thunkMiddleware from "redux-thunk";
+import reducer from "./reducer.js";
+
+//通过applyMiddleware来结合多个Middleware，返回一个enhancer
+const enhancer = applyMiddleware(thunkMiddleware);
+// 将enhancer作为第二个参数传入到createStore中
+const store = createStore(reducer, enhancer);
+
+export default store;
+```
+
+3.定义返回一个函数的 action:
+
+- 注意:这里不是返回一个对象了，而是一个函数;
+- 该函数在 dispatch 之后会被执行 q;
+
+```js
+// action.js
+const getHomeMultidataAction = () => {
+  return (dispatch) => {
+    axios.get("http://123.207.32.32:8000/home/multidata").then((res) => {
+      const data = res.data.data;
+      dispatch(changeBannersAction(data.banner.list));
+      dispatch(changeRecommendsAction(data.recommend.list));
+    });
+  };
+};
+```
