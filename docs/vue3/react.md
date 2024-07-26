@@ -334,7 +334,7 @@ export default store;
 
 ```js
 // action.js
-const getHomeMultidataAction = () => {
+const getHomeMultidataAction = (dispatch, getState) => {
   return (dispatch) => {
     axios.get("http://123.207.32.32:8000/home/multidata").then((res) => {
       const data = res.data.data;
@@ -344,3 +344,11 @@ const getHomeMultidataAction = () => {
   };
 };
 ```
+
+### 状态管理总结
+
+三种状态管理的方式：
+
+- 组件自己的 state
+- Context 数据的共享状态
+- 通过 Redux 来进行状态管理
