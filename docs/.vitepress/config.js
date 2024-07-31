@@ -148,11 +148,17 @@ export default defineConfig({
         {
           text: "Vue3",
           items: [
-            { text: "前言", link: "/vue3/index" },
             { text: "props", link: "/vue3/props" },
             { text: "pinia", link: "/vue3/pinia" },
             { text: "reactive", link: "/vue3/reactive" },
+          ],
+        },
+        {
+          text: "react",
+          items: [
             { text: "react", link: "/vue3/react" },
+            { text: "reactRouter", link: "/vue3/reactRouter" },
+            { text: "reactHooks", link: "/vue3/reactHooks" },
           ],
         },
       ],
