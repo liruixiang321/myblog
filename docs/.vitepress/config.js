@@ -12,11 +12,11 @@ export default defineConfig({
     lastUpdated: true,
     nav: [
       {
-        text: "作品集",
+        text: "📚作品集",
         link: "/artworks/index",
       },
       {
-        text: "基础知识",
+        text: "🎨基础知识",
         items: [
           { text: "html", link: "/base/html/" },
           { text: "css", link: "/base/css/" },
@@ -26,20 +26,20 @@ export default defineConfig({
         ],
       },
       {
-        text: "vue3",
-        link: "/vue3/",
+        text: "⚡技术框架",
+        link: "/技术框架/",
       },
 
       {
-        text: "技术总结",
+        text: "✈️技术总结",
         link: "/weeks/",
       },
       {
-        text: "好文收藏",
+        text: "🌟好文收藏",
         link: "/article/",
       },
       {
-        text: "归档",
+        text: "🔖归档",
         link: "/归档/",
       },
     ],
@@ -144,21 +144,21 @@ export default defineConfig({
           ],
         },
       ],
-      vue3: [
+      技术框架: [
         {
           text: "Vue3",
           items: [
-            { text: "props", link: "/vue3/props" },
-            { text: "pinia", link: "/vue3/pinia" },
-            { text: "reactive", link: "/vue3/reactive" },
+            { text: "props", link: "/技术框架/props" },
+            { text: "pinia", link: "/技术框架/pinia" },
+            { text: "reactive", link: "/技术框架/reactive" },
           ],
         },
         {
           text: "react",
           items: [
-            { text: "react", link: "/vue3/react" },
-            { text: "reactRouter", link: "/vue3/reactRouter" },
-            { text: "reactHooks", link: "/vue3/reactHooks" },
+            { text: "react", link: "/技术框架/react" },
+            { text: "reactRouter", link: "/技术框架/reactRouter" },
+            { text: "reactHooks", link: "/技术框架/reactHooks" },
           ],
         },
       ],
