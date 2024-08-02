@@ -91,6 +91,10 @@ export default defineConfig({
               text: "prefer-const",
               link: "/base/js/whyPreferConst",
             },
+            {
+              text: "空值合并符??=",
+              link: "/base/js/空值合并符",
+            },
           ],
         },
         {
