@@ -96,7 +96,7 @@ history.go(-1);
 
 #### Link
 
-<Link> 是 React 组件，是带路由跳转功能的 <a> 元素。
+`<Link>`是 React 组件，是带路由跳转功能的`<a>`元素。
 
 #### useNavigate
 
@@ -124,7 +124,7 @@ Umi 提供了开箱即用的数据预加载方案，能够解决在**多层嵌�
 
 ## 单元测试
 
-<LinkCard link="https://jestjs.io/zh-Hans/docs/getting-started" desc="Jest官方文档"></LinkCard>
+<LinkCard link="https://jestjs.io/zh-Hans/docs/getting-started" desc="Jest官方文"></LinkCard>
 
 Jest 是一个流行的 JavaScript 测试框架，它提供了一套完整的解决方案来测试前端应用程序。以下是 Jest 如何对前端进行测试的一些关键点：
 
