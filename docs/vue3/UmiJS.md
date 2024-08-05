@@ -124,6 +124,8 @@ Umi 提供了开箱即用的数据预加载方案，能够解决在**多层嵌�
 
 ## 单元测试
 
+<LinkCard link="https://jestjs.io/zh-Hans/docs/getting-started" desc="Jest官方文档"></LinkCard>
+
 Jest 是一个流行的 JavaScript 测试框架，它提供了一套完整的解决方案来测试前端应用程序。以下是 Jest 如何对前端进行测试的一些关键点：
 
 - 单元测试：Jest 允许你编写单元测试来测试应用程序中最小的可测试部分。单元测试通常针对函数或类方法，确保它们在给定输入时产生预期的输出。
@@ -145,3 +147,5 @@ Jest 是一个流行的 JavaScript 测试框架，它提供了一套完整的解
 - 测试运行器：Jest 可以作为测试运行器与许多前端项目集成，包括那些使用 Create React App、Vue CLI 或 Angular CLI 创建的项目。
 
 - 与 UI 测试库的集成：Jest 可以与如 React Testing Library 或 Enzyme 等 UI 测试库一起使用，以提供更丰富的测试功能，如模拟用户事件、查询 DOM 元素等。
+
+### js 测试
