@@ -4,13 +4,23 @@
   src: url("/fonts/LHANDW.TTF");
   /* font-display: block; */
 }
+/* 正文字体 */
+@font-face {
+  font-family: "SourceHanSerifCN";
+  src: local("SourceHanSerifCN"), url("/fonts/SourceHanSerifCN-VF.woff2");
+}
+/* 字体  */
+:root {
+  --vp-font-family-base: "SourceHanSerifCN";
+  /* --vp-font-family-mono: "FiraCode"; */
+}
 .VPNavBarTitle,
 .VPHero .name span,
 .VPHero .text {
   font-family: "Lucida Handwriting";
 }
 h1 {
-  background: -webkit-linear-gradient(-45deg, #efb8d7 5%, #0ea5e9 15%);
+  background: -webkit-linear-gradient(-45deg, #efb8d7 5%, #3e59b6 15%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

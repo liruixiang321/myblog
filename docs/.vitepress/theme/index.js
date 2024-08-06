@@ -1,6 +1,6 @@
 // .vitepress/theme/index.js
 
-import DefaultTheme from "vitepress/theme";
+import DefaultTheme from "vitepress/theme-without-fonts";
 import MyLayout from "./MyLayout.vue";
 import sakura from "./components/Sakura.vue";
 import LinkCard from "./components/LinkCard.vue";
