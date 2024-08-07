@@ -63,7 +63,7 @@ export default defineConfig({
       ],
       "/base/": [
         {
-          text: "html",
+          text: "html🙌",
           items: [
             {
               text: "html",
@@ -72,16 +72,16 @@ export default defineConfig({
           ],
         },
         {
-          text: "CSS学习🖊",
+          text: "CSS🌈",
           items: [
             {
-              text: "tailwindcss学习🖊",
+              text: "tailwindcss上手🍃",
               link: "/base/css/tailwindcss",
             },
           ],
         },
         {
-          text: "JS学习",
+          text: "JS⛪",
           items: [
             {
               text: "改善代码风格",
@@ -98,7 +98,7 @@ export default defineConfig({
           ],
         },
         {
-          text: "TS学习🖊",
+          text: "TS🎈",
           items: [
             {
               text: "日常开发遇到的问题",
@@ -107,7 +107,7 @@ export default defineConfig({
           ],
         },
         {
-          text: "前端监控",
+          text: "前端监控🕵️",
           items: [
             {
               text: "前端监控平台",
@@ -163,6 +163,9 @@ export default defineConfig({
             { text: "react", link: "/技术框架/react" },
             { text: "reactRouter", link: "/技术框架/reactRouter" },
             { text: "reactHooks", link: "/技术框架/reactHooks" },
+            { text: "UmiJS", link: "/技术框架/UmiJS" },
+            { text: "reactFiber", link: "/技术框架/reactFiber" },
+            { text: "antdPro使用", link: "/技术框架/antdPro使用" },
           ],
         },
       ],
