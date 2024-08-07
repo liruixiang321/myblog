@@ -15,6 +15,13 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+img {
+  display: block;
+  object-fit: contain;
+  border-radius: 8px;
+  margin: 8px auto;
+  box-shadow: 2px 4px 7px #999;
+}
 .bg-stripe:hover {
   background-image: repeating-linear-gradient(
     45deg,
