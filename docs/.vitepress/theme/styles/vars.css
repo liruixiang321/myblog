@@ -25,6 +25,7 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
 .bg-stripe:hover {
   background-image: repeating-linear-gradient(
     45deg,
