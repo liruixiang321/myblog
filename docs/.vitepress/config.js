@@ -143,6 +143,10 @@ export default defineConfig({
               text: "Menorepo和turbo",
               link: "/weeks/Menorepo和turbo",
             },
+            {
+              text: "npm link",
+              link: "/weeks/npmLink",
+            },
           ],
         },
       ],
