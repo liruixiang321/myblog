@@ -264,7 +264,7 @@
           ></span>
         </div>
         <p class="font-light text-center">
-          Feels like {{ weatherToday.temperature - 1 }}°C
+          Feels like {{ weatherToday.temperature + 1 }}°C
         </p>
       </div>
     </div>
@@ -307,9 +307,9 @@
       .catch(console.error);
   }
   fetchData(getWeather);
-  fetch(
-    "https://devapi.qweather.com/v7/indices/1d?type=1,2&location=101010100&key=e559526727b64f8ea2f9ec9b5dd7b7c7"
-  ).then((res) => res.json());
+  //   fetch(
+  //     "https://devapi.qweather.com/v7/indices/1d?type=1,2&location=101010100&key=e559526727b64f8ea2f9ec9b5dd7b7c7"
+  //   ).then((res) => res.json());
 </script>
 
 <style scoped></style>

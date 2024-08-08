@@ -135,6 +135,14 @@ export default defineConfig({
               text: "react中的css方案",
               link: "/weeks/react中的css方案",
             },
+            {
+              text: "diolog组件封装",
+              link: "/weeks/diolog组件封装",
+            },
+            {
+              text: "Menorepo和turbo",
+              link: "/weeks/Menorepo和turbo",
+            },
           ],
         },
       ],
