@@ -20,4 +20,4 @@ npm link 是 npm（Node Package Manager）的一个功能，它允许你创建�
 
 在 Monorepo 的上下文中，npm link 可以解决一些依赖管理的问题，比如"幽灵依赖"问题(由于 npm/yarn 存在依赖提升)，即某些依赖没有在 package.json 中声明，但是被其他项目使用。通过 npm link，可以在一定程度上确保所有依赖都是显式链接的，从而避免这类问题。
 
-然而，npm link 也有一些局限性，比如它不支持跨平台（Windows 和 Unix-like 系统之间），并且可能会引入一些复杂性，比如在构建和部署时需要额外的步骤来处理符号链接。因此，一些现代的 Monorepo 工具和工作流可能使用其他方法来管理依赖，比如使用 yarn workspace 或 pnpm。
+然而，npm link 也有一些局限性，比如它不支持跨平台（Windows 和 Unix-like 系统之间），并且可能会引入一些复杂性，比如在构建和部署时需要额外的步骤来处理符号链接。因此，一些现代的 Monorepo 工具和工作流可能使用其他方法来管理依赖，比如使用 yarn workspace 或 pnpm。 c
