@@ -1,12 +1,12 @@
 ---
 updateTime: "2024-08-06 15:53:31"
-desc: "Menorepo把所有有依赖关系的代码都放到一个仓库中进行统一维护，当一个库变动时，其它的代码能自动的进行依赖升级，那么就能精简开发流程、提高开发效率。这种多包的代码仓库管理方式"
+desc: "monorepo把所有有依赖关系的代码都放到一个仓库中进行统一维护，当一个库变动时，其它的代码能自动的进行依赖升级，那么就能精简开发流程、提高开发效率。这种多包的代码仓库管理方式"
 tags: "包管理/工程化"
 ---
 
-## Menorepo📚
+## monorepo📚
 
-**✨Menorepo 是什么**
+**✨monorepo 是什么**
 
 Monorepo 是一种项目管理方式，在 Monorepo 之前，代码仓库管理方式是 MultiRepo，即每个项目都对应着一个单独的代码仓库每个项目进行分散管理。
 这就会导致许多弊端，例如可能每个项目的基建以及工具库都是差不多的，基础代码的重复复用问题等等...
@@ -48,7 +48,7 @@ Monorepo 就是把多个项目放在一个仓库里面,现代的前端工程已�
 
 其实，很容易发现这些项目里的很多基建的逻辑都是重复的，如果是 10 个项目，就需要维护 10 份基建的流程，逻辑重复不说，各个项目间存在构建、部署和发布的规范不能统一的情况，这样维护起来就更加麻烦了。
 
-**menorepo 落地**
+**monorepo 落地**
 
 关于 monorepo 的文章已经很多了，并且目前可以搭建 Monorepo 的工具也很多，例如
 | 工具 | 简述 |
@@ -59,7 +59,11 @@ Monorepo 就是把多个项目放在一个仓库里面,现代的前端工程已�
 | [Nx](https://nx.dev/) | 具有一流的 monorepo 支持和强大集成的下一代构建系统 |
 |[Lerna](https://www.lernajs.cn/) | 用于管理包含多个软件包的项目 |
 
-下面介绍一下 Turborepo,这个目前最流行的 menorepo 构建方案
+下面介绍一下 Turborepo,这个目前最流行的 monorepo 构建方案
+
+**monorepo 仓库的所有权问题**
+
+<LinkCard desc="Every big monorepo needs the CODEOWNERS feature" link="https://www.satellytes.com/blog/post/monorepo-codeowner-github-enterprise/"></LinkCard>
 
 ## Turborepo📚
 

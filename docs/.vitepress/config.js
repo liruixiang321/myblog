@@ -140,8 +140,8 @@ export default defineConfig({
               link: "/weeks/diolog组件封装",
             },
             {
-              text: "Menorepo和turbo",
-              link: "/weeks/Menorepo和turbo",
+              text: "Monorepo和turbo",
+              link: "/weeks/Monorepo和turbo",
             },
             {
               text: "npm link",
