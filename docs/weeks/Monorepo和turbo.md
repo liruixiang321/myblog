@@ -59,11 +59,121 @@ Monorepo 就是把多个项目放在一个仓库里面,现代的前端工程已�
 | [Nx](https://nx.dev/) | 具有一流的 monorepo 支持和强大集成的下一代构建系统 |
 |[Lerna](https://www.lernajs.cn/) | 用于管理包含多个软件包的项目 |
 
-下面介绍一下 Turborepo,这个目前最流行的 monorepo 构建方案
+### monorepo 的使用
+
+4.1、中枢管理操作
+在 workspace 模式下，项目根目录通常不会作为一个子模块或者 npm 包，而是主要作为一个管理中枢，执行一些全局操作，安装一些共有的依赖，每个子模块都能访问根目录的依赖，适合把 TypeScript、Vite、eslint 等公共开发依赖装在这里，下面简单介绍一些常用的中枢管理操作。
 
 **monorepo 仓库的所有权问题**
 
 <LinkCard desc="Every big monorepo needs the CODEOWNERS feature" link="https://www.satellytes.com/blog/post/monorepo-codeowner-github-enterprise/"></LinkCard>
+
+### 在 monorepo 模式下进行发包
+
+1. 安装 pnpm
+2. pnpm init
+3. 修改 package.json,包管理器限制
+
+```json
+{
+  "name": "monorepo发包",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+
+  "scripts": {
+    //只允许pnpm来开发
+    "preinstall": "npx only-allow pnpm"
+  },
+  "private": true,
+  //   防止最外层被发布出去，设置为true后发布会进行提醒
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+```
+
+4. 手动添加 pnpm-workspace.yaml 文件
+
+```bash
+packages:
+  - 'packages/**'
+```
+
+5. 添加 packages 文件夹
+6. 添加子包 test-share
+7. 进入子包 pnpm init
+8. 修改 package.json
+
+```json
+ "publishConfig": {
+    "access": "public"
+  },
+```
+
+9. 修改包名为@project/test-share
+10. 添加子包 app
+11. 进入子包 pnpm init 同时修改 package.json
+12. 子包名@project/app
+13. app 里添加依赖
+
+```bash
+pnpm -F @project/app add @project/test-share
+```
+
+添加依赖后
+
+```json
+ "dependencies": {
+    "@monorepo-test/test-share": "workspace:^"
+  }
+```
+
+> 假设我们的 workspace 中有 foo、 bar、 qar、 zoo 并且它们的版本都是 1.5.0，如下：
+
+```bash
+{
+    "dependencies": {
+        "foo": "workspace:*",
+        "bar": "workspace:~",
+        "qar": "workspace:^",
+        "zoo": "workspace:^1.5.0"
+    }
+}
+
+//将会被转化为：
+
+{
+    "dependencies": {
+        "foo": "1.5.0", //这表示依赖项foo需要使用版本1.5.0。没有使用任何特定的版本范围符号，所以它将严格安装这个版本。
+        "bar": "~1.5.0", //这里的~符号表示依赖项bar可以安装1.5.0或者更高但低于2.0.0的版本。这意味着它允许安装1.5.x系列的任何版本，但不会升级到2.0.0或更高版本。
+        "qar": "^1.5.0", //^符号表示依赖项qar可以安装1.5.0或者更高但低于2.0.0的版本。与~符号不同，^允许安装到1.x.x系列的任何版本，这意味着如果qar发布了1.6.0，它也会被认为是兼容的。
+        "zoo": "^1.5.0" //这与qar的规则相同，依赖项zoo可以安装1.5.0或者更高但低于2.0.0的版本。
+    }
+}
+```
+
+14. 登陆 npm
+
+```bash
+npm login
+```
+
+15. 安装发包依赖(用来进行发包管理和日志)
+
+```bash
+pnpm install @changesets/cli -w --save-dev
+pnpm changeset init
+```
+
+16. 发布
+
+pnpm changeset
+pnpm changeset version
+pnpm changeset publish
 
 ## Turborepo📚
 
@@ -102,3 +212,11 @@ Turbo 通过其远程缓存功能可以帮助多人远程构建云缓存实现�
 <LinkCard desc="前端工程Monorepo项目管理方式" link="https://www.jb51.net/article/254801.htm"></LinkCard>
 
 <LinkCard desc="前端工程Monorepo项目管理方式" link="https://www.jb51.net/article/254801.htm"></LinkCard>
+
+```
+
+```
+
+```
+
+```
