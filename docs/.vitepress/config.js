@@ -78,6 +78,10 @@ export default defineConfig({
               text: "tailwindcss上手🍃",
               link: "/base/css/tailwindcss",
             },
+            {
+              text: "object-fit",
+              link: "object-fit",
+            },
           ],
         },
         {
