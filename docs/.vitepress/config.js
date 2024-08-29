@@ -52,14 +52,14 @@ export default defineConfig({
           text: "我的博客",
           items: [{ text: "建站记录", link: "/artworks/vitepressblog" }],
         },
-        {
-          text: "我的个人项目",
-          items: [
-            { text: "组件库封装", link: "/artworks/components" },
-            { text: "简历自制", link: "/artworks/resume" },
-            { text: "前端监控实践", link: "/artworks/femonitor" },
-          ],
-        },
+        // {
+        //   text: "我的个人项目",
+        //   items: [
+        //     { text: "组件库封装", link: "/artworks/components" },
+        //     { text: "简历自制", link: "/artworks/resume" },
+        //     { text: "前端监控实践", link: "/artworks/femonitor" },
+        //   ],
+        // },
       ],
       "/base/": [
         {
@@ -150,6 +150,14 @@ export default defineConfig({
             {
               text: "npm link",
               link: "/weeks/npmLink",
+            },
+            {
+              text: "单点登录",
+              link: "/weeks/单点登录",
+            },
+            {
+              text: "业务组件库实践",
+              link: "/weeks/业务组件库实践",
             },
           ],
         },
