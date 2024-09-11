@@ -195,3 +195,7 @@ EOF
   ```
 
 这些文件构成了一个基本的 Vue 组件，包括它的模板、脚本、类型定义、入口导出和测试。
+
+## 阿里云 OSS CICD 对 vitepress 站点进行部署
+
+<LinkCard link="https://juejin.cn/post/7250083673189253176" desc="快速搭建多环境CICD自动化部署"></LinkCard>
