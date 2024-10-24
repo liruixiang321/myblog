@@ -124,6 +124,10 @@ export default defineConfig({
         {
           text: "一些技术上的总结",
           items: [
+            {
+              text: "echarts开发记录",
+              link: "/weeks/echarts开发记录",
+            },
             { text: "api方案", link: "/weeks/api管理方案" },
             { text: "拒绝代码屎山", link: "/weeks/拒绝代码屎山" },
             { text: "入职第一周工作计划", link: "/weeks/本周工作计划" },
