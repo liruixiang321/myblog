@@ -105,6 +105,10 @@ export default defineConfig({
           text: "TS🎈",
           items: [
             {
+              text: "重学ts",
+              link: "/base/ts/index",
+            },
+            {
               text: "日常开发遇到的问题",
               link: "/base/ts/problems",
             },

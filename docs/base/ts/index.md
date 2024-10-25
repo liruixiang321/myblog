@@ -1,4 +1,4 @@
-# ts
+# 重学 ts
 
 ## 字面量类型
 
@@ -87,3 +87,60 @@ const fooKey = Items[0]; // "Foo"
 ### 总结
 
 对于枚举，我们可以使用它来替换掉之前使用对象进行常量收敛的代码，而如果你希望减少编译后的代码，可以进一步地使用在编译后会被完全抹除的常量枚举。
+
+## 函数与 class 类型
+
+### 函数类型签名
+
+函数的声明描述了函数参数的类型和返回值类型。使用:语法进行标注。
+
+实际开发中：函数分为 函数声明和函数表达式两种形式。
+
+```ts
+// 函数声明
+function sum(a: number, b: number): number {
+  return a + b;
+}
+// 函数表达式
+const sum = function (a: number, b: number): number {
+  return a + b;
+};
+```
+
+实际开发中：在箭头函数中也有两种方式，**在参数和返回值之间使用 : 指定类型**或者**使用类型别名将函数声明进行抽离**
+
+```ts
+// 函数表达式
+const sum = (a: number, b: number): number => {
+  return a + b;
+};
+/
+
+// 类型别名
+type Sum = (a: number, b: number) => number;
+const sum: Sum = (a, b) => a + b;
+```
+
+### 可选参数
+
+```ts
+// 在函数逻辑中注入可选参数默认值
+function foo1(name: string, age?: number): number {
+  const inputAge = age ?? 18;
+  return name.length + inputAge;
+}
+
+// 直接为可选参数声明默认值
+function foo2(name: string, age: number = 18): number {
+  const inputAge = age;
+  return name.length + inputAge;
+}
+```
+
+::: tip
+默认参数必须位于必选参数之后，否则会导致编译错误。
+:::
+
+### Class
+
+class 的结构：属性，构造函数，方法，get/set
