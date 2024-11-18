@@ -175,6 +175,11 @@ export default defineConfig({
               text: "实现一个emoji背景墙",
               link: "/weeks/实现一个emoji背景墙",
             },
+            {
+              text: "elMessage二次封装",
+              link: "/weeks/elMessage二次封装",
+            },
+
           ],
         },
       ],

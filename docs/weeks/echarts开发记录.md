@@ -49,7 +49,7 @@ export default xxxSituation;
 3. 调整图表大小：监听窗口大小变化，自动调整图表大小。
 4. 更新图表选项：当 props.option 发生变化时，更新图表的配置。
 
-```jsx
+```jsx EChartsCommon.jsx
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
