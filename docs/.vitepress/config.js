@@ -167,6 +167,14 @@ export default defineConfig({
               text: "业务组件库实践",
               link: "/weeks/业务组件库实践",
             },
+            {
+              text: "echarts开发记录",
+              link: "/weeks/echarts开发记录",
+            },
+            {
+              text: "实现一个emoji背景墙",
+              link: "/weeks/实现一个emoji背景墙",
+            },
           ],
         },
       ],
