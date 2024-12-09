@@ -1,11 +1,8 @@
 ---
-
 tags: "监控"
 updateTime: "2024-05-21 13:41:59"
 desc: "介绍了前端监控的一些基本知识"
-
 ---
-
 
 # 前端监控平台
 
@@ -17,11 +14,11 @@ desc: "介绍了前端监控的一些基本知识"
 
 #### 无埋点
 
-在产品中植入SDK,通过界面配置的方式对关键的行为进行定义，完成埋点采集，一般都是通过第三方统计工具，如：友盟、神策、百度统计、诸葛IO等。
+在产品中植入 SDK,通过界面配置的方式对关键的行为进行定义，完成埋点采集，一般都是通过第三方统计工具，如：友盟、神策、百度统计、诸葛 IO 等。
 
 #### 前端代码埋点
 
-前端埋点与全埋点类似，也需要嵌入SDK，不同的是对于每个事件行为都需要调用SDK代码，传入必要的事件名，属性参数等等，然后发到后台数据服务器。
+前端埋点与全埋点类似，也需要嵌入 SDK，不同的是对于每个事件行为都需要调用 SDK 代码，传入必要的事件名，属性参数等等，然后发到后台数据服务器。
 前端埋点适用于：其他非关键业务量或不需要请求服务器的行为，能记录用户绝大多数的操作行为
 
 ### 埋点实现
@@ -30,16 +27,15 @@ desc: "介绍了前端监控的一些基本知识"
 
 ## 性能数据采集
 
-SAP页面加载模型
+SAP 页面加载模型
 ![Alt text](./sapLoadimg.png)
-最初我们可以使用window。performance.timing来获取加载过程中模型的各个阶段的消耗时间。
+最初我们可以使用 window。performance.timing 来获取加载过程中模型的各个阶段的消耗时间。
 
-``` js
-
+```js
 // window.performance.timing 各字段说明
 {
-    navigationStart,  // 同一个浏览器上下文中，上一个文档结束时的时间戳。如果没有上一个文档，这个值会和 fetchStart 相同。
-    unloadEventStart,  // 上一个文档 unload 事件触发时的时间戳。如果没有上一个文档，为 0。
+  navigationStart, // 同一个浏览器上下文中，上一个文档结束时的时间戳。如果没有上一个文档，这个值会和 fetchStart 相同。
+    unloadEventStart, // 上一个文档 unload 事件触发时的时间戳。如果没有上一个文档，为 0。
     unloadEventEnd, // 上一个文档 unload 事件结束时的时间戳。如果没有上一个文档，为 0。
     redirectStart, // 表示第一个 http 重定向开始时的时间戳。如果没有重定向或者有一个非同源的重定向，为 0。
     redirectEnd, // 表示最后一个 http 重定向结束时的时间戳。如果没有重定向或者有一个非同源的重定向，为 0。
@@ -55,14 +51,14 @@ SAP页面加载模型
     domLoading, // dom 结构开始解析的时间戳，document.readyState 的值为 loading。
     domInteractive, // dom 结构解析结束，开始加载内嵌资源的时间戳，document.readyState 的状态为 interactive。
     domContentLoadedEventStart, // DOMContentLoaded 事件触发时的时间戳，所有需要执行的脚本执行完毕。
-    domContentLoadedEventEnd,  // DOMContentLoaded 事件结束时的时间戳
+    domContentLoadedEventEnd, // DOMContentLoaded 事件结束时的时间戳
     domComplete, // dom 文档完成解析的时间戳， document.readyState 的值为 complete。
     loadEventStart, // load 事件触发的时间。
-    loadEventEnd // load 时间结束时的时间。
+    loadEventEnd; // load 时间结束时的时间。
 }
 ```
 
-后来window.performance.timing被废除，通过PerfomanceObserve来获取。
+后来 window.performance.timing 被废除，通过 PerfomanceObserve 来获取。
 
 ## 用户行为数据采集
 
@@ -70,7 +66,7 @@ SAP页面加载模型
 
 ### 设计类
 
-``` js
+```js
 
 // 创建用户行为类
 class Breadcrumb {
@@ -126,14 +122,14 @@ reportData({
 
 ### 页面跳转
 
-在vue中的两种路由模式history和hash模式，history模式通过pushState和replaceState方法来改变路由还可以通过popState事件监听，hash模式是通过hashChange事件来监听url变化。所以改写以上两个方法或者监听hashChange事件进行上报。
+在 vue 中的两种路由模式 history 和 hash 模式，history 模式通过 pushState 和 replaceState 方法来改变路由还可以通过 popState 事件监听，hash 模式是通过 hashChange 事件来监听 url 变化。所以改写以上两个方法或者监听 hashChange 事件进行上报。
 
-``` js
+```js
 // lastHref 前一个页面的路由
 let lastHref = document.location.href;
 function historyReplace() {
   function historyReplaceFn(originalHistoryFn) {
-    return function(...args) {
+    return function (...args) {
       const url = args.length > 2 ? args[2] : undefined;
       if (url) {
         const from = lastHref;
@@ -142,7 +138,7 @@ function historyReplace() {
         // 上报路由变化
         reportData("routeChange", {
           from,
-          to
+          to,
         });
       }
       return originalHistoryFn.apply(this, args);
@@ -173,42 +169,42 @@ function replaceAop(source, name, fn) {
 
 分析这些资源是如何加载的, 可以帮助我们了解究竟是什么原因拖慢了网页，从而采取对应的措施来提升网页速度
 
-``` js
+```js
 // PerformanceResourceTiming 各字段说明
 {
   connectEnd, // 表示浏览器完成建立与服务器的连接以检索资源之后的时间
-  connectStart, // 表示浏览器开始建立与服务器的连接以检索资源之前的时间
-  decodedBodySize, // 表示在删除任何应用的内容编码之后，从*消息主体*的请求（HTTP 或缓存）中接收到的大小（以八位字节为单位）
-  domainLookupEnd, // 表示浏览器完成资源的域名查找之后的时间
-  domainLookupStart, // 表示在浏览器立即开始资源的域名查找之前的时间
-  duration, // 返回一个timestamp，即 responseEnd 和 startTime 属性的差值
-  encodedBodySize, // 表示在删除任何应用的内容编码之前，从*有效内容主体*的请求（HTTP 或缓存）中接收到的大小（以八位字节为单位）
-  entryType, // 返回 "resource"
-  fetchStart, // 表示浏览器即将开始获取资源之前的时间
-  initiatorType, // 代表启动性能条目的资源的类型，如 PerformanceResourceTiming.initiatorType 中所指定
-  name, // 返回资源 URL
-  nextHopProtocol, // 代表用于获取资源的网络协议
-  redirectEnd, // 表示收到上一次重定向响应的发送最后一个字节时的时间
-  redirectStart, // 表示上一次重定向开始的时间
-  requestStart, // 表示浏览器开始向服务器请求资源之前的时间
-  responseEnd, // 表示在浏览器接收到资源的最后一个字节之后或在传输连接关闭之前（以先到者为准）的时间
-  responseStart, // 表示浏览器从服务器接收到响应的第一个字节后的时间
-  secureConnectionStart, // 表示浏览器即将开始握手过程以保护当前连接之前的时间
-  serverTiming, // 一个 PerformanceServerTiming 数组，包含服务器计时指标的PerformanceServerTiming 条目
-  startTime, // 表示资源获取开始的时间。该值等效于 PerformanceEntry.fetchStart
-  transferSize, // 代表所获取资源的大小（以八位字节为单位）。该大小包括响应标头字段以及响应有效内容主体
-  workerStart // 如果服务 Worker 线程已经在运行，则返回在分派 FetchEvent 之前的时间戳，如果尚未运行，则返回在启动 Service Worker 线程之前的时间戳。如果服务 Worker 未拦截该资源，则该属性将始终返回 0。
+    connectStart, // 表示浏览器开始建立与服务器的连接以检索资源之前的时间
+    decodedBodySize, // 表示在删除任何应用的内容编码之后，从*消息主体*的请求（HTTP 或缓存）中接收到的大小（以八位字节为单位）
+    domainLookupEnd, // 表示浏览器完成资源的域名查找之后的时间
+    domainLookupStart, // 表示在浏览器立即开始资源的域名查找之前的时间
+    duration, // 返回一个timestamp，即 responseEnd 和 startTime 属性的差值
+    encodedBodySize, // 表示在删除任何应用的内容编码之前，从*有效内容主体*的请求（HTTP 或缓存）中接收到的大小（以八位字节为单位）
+    entryType, // 返回 "resource"
+    fetchStart, // 表示浏览器即将开始获取资源之前的时间
+    initiatorType, // 代表启动性能条目的资源的类型，如 PerformanceResourceTiming.initiatorType 中所指定
+    name, // 返回资源 URL
+    nextHopProtocol, // 代表用于获取资源的网络协议
+    redirectEnd, // 表示收到上一次重定向响应的发送最后一个字节时的时间
+    redirectStart, // 表示上一次重定向开始的时间
+    requestStart, // 表示浏览器开始向服务器请求资源之前的时间
+    responseEnd, // 表示在浏览器接收到资源的最后一个字节之后或在传输连接关闭之前（以先到者为准）的时间
+    responseStart, // 表示浏览器从服务器接收到响应的第一个字节后的时间
+    secureConnectionStart, // 表示浏览器即将开始握手过程以保护当前连接之前的时间
+    serverTiming, // 一个 PerformanceServerTiming 数组，包含服务器计时指标的PerformanceServerTiming 条目
+    startTime, // 表示资源获取开始的时间。该值等效于 PerformanceEntry.fetchStart
+    transferSize, // 代表所获取资源的大小（以八位字节为单位）。该大小包括响应标头字段以及响应有效内容主体
+    workerStart; // 如果服务 Worker 线程已经在运行，则返回在分派 FetchEvent 之前的时间戳，如果尚未运行，则返回在启动 Service Worker 线程之前的时间戳。如果服务 Worker 未拦截该资源，则该属性将始终返回 0。
 }
 ```
 
-如果我们只关注首页资源，我们可以在window.onload事件中去收集。
+如果我们只关注首页资源，我们可以在 window.onload 事件中去收集。
 如果要收集所有的资源，需要通过定时器反复地去收集，并且在一轮收集结束后，通过调用 clearResourceTimings 将 performance entries 里的信息清空，避免在下一轮收集时取到重复的资源
 
 ## 个性化指标
 
 ### long task
 
-### memory内存
+### memory 内存
 
 performance.memory 可以显示此刻内存占用情况，它是一个动态值，其中：
 
@@ -221,11 +217,12 @@ usedJSHeapSize 表示可使用的内存的大小。
 ### 首屏加载时间
 
 计算：
-1）利用MutationObserver监听document对象，每当dom变化时触发该事件
-2）判断监听的dom是否在首屏内，如果在首屏内，将该dom放到指定的数组中，记录下当前dom变化的时间点
-3）在MutationObserver的callback函数中，通过防抖函数，监听document.readyState状态的变化
-4）当document.readyState === 'complete'，停止定时器和 取消对document的监听
-5）遍历存放dom的数组，找出最后变化节点的时间，用该时间点减去performance.timing.navigationStart 得出首屏的加载时间
+
+- 1.利用 MutationObserver 监听 document 对象，每当 dom.
+- 2.判断监听的 dom 是否在首屏内，如果在首屏内，将该 dom 放到指定的数组中，记录下当前 dom 变化的时间点
+- 3.在 MutationObserver 的 callback 函数中，通过防抖函数，监听 document.readyState 状态的变化
+- 4.当 document.readyState === 'complete'，停止定时器和 取消对 document 的监听
+- 5.遍历存放 dom 的数组，找出最后变化节点的时间，用该时间点减去 performance.timing.navigationStart 得出首屏的加载时间
 
 ### 白屏时间
 
@@ -233,13 +230,13 @@ usedJSHeapSize 表示可使用的内存的大小。
 
 ### 总下载时间
 
-### DNS解析时间
+### DNS 解析时间
 
-### TCP连接时间
+### TCP 连接时间
 
-### HTTP请求时间
+### HTTP 请求时间
 
-### HTTP响应时间
+### HTTP 响应时间
 
 ### pv
 
@@ -247,7 +244,77 @@ usedJSHeapSize 表示可使用的内存的大小。
 
 ### 用户行为统计
 
-### 界面js异常及报错
+#### 用户行为类别
+
+1. 页面跳转
+2. 资源加载
+3. 接口调用
+4. 点击事件
+5. 代码报错
+
+### 异常及报错
+
+#### 错误类别
+
+1. js 语法错误和运行时错误
+2. 异步错误
+3. 静态资源加载错误
+4. 接口请求报错
+
+#### 错误捕获
+
+1. try-catch
+   try-catch 可以捕获常规的运行错误，不能捕获异步和语法错误
+
+```js
+try {
+} catch (error) {
+  // 处理错误
+}
+```
+
+2. window.onerror
+   window.onerror 可以捕获常见错误，异步错误，但不能捕获资源错误
+
+```js
+/**
+ * @param { string } message 错误信息
+ * @param { string } source 发生错误的脚本URL
+ * @param { number } lineno 发生错误的行号
+ * @param { number } colno 发生错误的列号
+ * @param { object } error Error对象
+ */
+window.onerror = function (message, source, lineno, colno, error) {
+  console.log("捕获到的错误信息是：", message, source, lineno, colno, error);
+};
+```
+
+3.window.addEventListener('error')
+可以捕获到资源加载的错误
+4.window.addEventListener('unhandledrejection')
+可以捕获到 promise 错误
+5.vue 中捕获错误
+控制台会报错，但是 window.onerror 和 error 不能捕获到,使用 vue 提供的 api: vue.config.errorHandler
+
+```js
+// vue项目在Vue.config.errorHandler中上报错误
+Vue.config.errorHandler = function (err, vm, info) {
+  console.log(err);
+  HandleEvents.handleError(err);
+  if (handler) handler.apply(null, [err, vm, info]);
+};
+```
+
+6.react 中捕获错误
+使用 react 提供的 api: ErrorBoundary 7.跨域问题
+在 script 标签中加入 crossorigin,就可以通过 error 事件拿到具体的报错信息
+
+7.接口错误
+
+重写原型上的方法,在对应的关键方法上进行错误上报，实现接口拦截
+xhr.open
+xhr.send
+fetch
 
 ### 用户设备信息: ip、浏览器、操作系统等
 
