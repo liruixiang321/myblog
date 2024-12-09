@@ -80,7 +80,11 @@ export default defineConfig({
             },
             {
               text: "object-fit",
-              link: "object-fit",
+              link: "/base/css/object-fit",
+            },
+            {
+              text: "shadcnUI",
+              link: "/base/css/shadcnUI",
             },
           ],
         },
@@ -179,7 +183,6 @@ export default defineConfig({
               text: "elMessage二次封装",
               link: "/weeks/elMessage二次封装",
             },
-
           ],
         },
       ],
