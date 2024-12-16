@@ -133,6 +133,11 @@ export default defineConfig({
           text: "一些技术上的总结",
           items: [
             {
+              text: "前端监控中设计模式",
+              link: "/weeks/前端监控系统中的设计模式",
+            },
+            { text: "大屏展示技术", link: "/weeks/大屏展示数据技术" },
+            {
               text: "echarts开发记录",
               link: "/weeks/echarts开发记录",
             },
