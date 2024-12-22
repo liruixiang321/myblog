@@ -62,7 +62,45 @@ SAP 页面加载模型
 
 ## 用户行为数据采集
 
-用户行为：页面路有变化，鼠标点击，资源加载，接口调用，代码报错等
+我们需要关注的事件有以下这几类：
+
+1. 网络请求类
+
+- XHR: XMLHttpRequest 请求
+- FETCH: Fetch API 请求
+
+2. 用户交互类
+
+- CLICK: 点击事件
+- DOM: DOM 操作事件
+
+3. 路由类
+
+- HISTORY: 历史记录变更
+- HASHCHANGE: Hash 路由变更
+
+4. 错误类
+
+- ERROR: 一般错误
+- UNHANDLEDREJECTION: Promise 未处理的 rejection
+- RESOURCE: 资源加载错误
+
+5. 框架类
+
+- VUE: Vue 框架相关事件
+- REACT: React 框架相关事件
+
+6. 性能类
+
+- PERFORMANCE: 性能监控
+- WHITESCREEN: 白屏检测
+- RECORDSCREEN: 录屏
+
+7. 自定义类
+
+- CUSTOM: 用户自定义事件
+
+其中性能类不需要记录为用户行为数据
 
 ### 设计类
 
