@@ -19,6 +19,7 @@ export default defineConfig({
         text: "🎨基础知识",
         items: [
           { text: "html", link: "/base/html/" },
+          { text: "工程化⚙️", link: "/base/工程化/webpack" },
           { text: "css", link: "/base/css/" },
           { text: "js", link: "/base/js/" },
           { text: "ts", link: "/base/ts/" },
@@ -124,6 +125,15 @@ export default defineConfig({
             {
               text: "前端监控平台",
               link: "/base/jiankongimg/index",
+            },
+          ],
+        },
+        {
+          text: "工程化",
+          items: [
+            {
+              text: "webpack",
+              link: "/base/工程化/webpack",
             },
           ],
         },
