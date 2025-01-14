@@ -1171,6 +1171,153 @@ function getSnapshot() {
 }
 ```
 
+## useTransition
+
+useTransition 是 React 18 中引入的一个 Hook，用于管理 UI 中的过渡状态，特别是在处理长时间运行的状态更新时。它允许你将某些更新标记为“过渡”状态，这样 React 可以优先处理更重要的更新，比如用户输入，同时延迟处理过渡更新。
+
+### 使用 ⚙️
+
+```tsx
+const [isPending, startTransition] = useTransition();
+```
+
+### 参数
+
+不需要参数
+
+### 返回值
+
+1. isPending(boolean)，告诉你是否存在待处理的 transition。
+2. startTransition(function) 函数，你可以使用此方法将状态更新标记为 transition。
+
+### 优先级
+
+(一般) 不是很重要，因为在实际工作中应用较少
+
+### 案例
+
+```tsx
+import React, {
+  useLayoutEffect,
+  useState,
+  useReducer,
+  useTransition,
+} from "react";
+import { Input, List } from "antd";
+interface Iitem {
+  id: string;
+  name: string;
+  address: string;
+  age: number;
+}
+function App() {
+  const [inputValue, setInputValue] = useState("");
+  const [list, setList] = useState<Iitem[]>([]);
+  const [isPending, startTransition] = useTransition();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setInputValue(val);
+    fetch("/api/mock/list?key=" + val)
+      .then((res) => res.json())
+      .then((res) => {
+        startTransition(() => {
+          setList(res.list);
+        });
+      });
+  };
+  return (
+    <>
+      <Input value={inputValue} onChange={handleChange} />
+      {isPending && <div>loading...</div>}
+      <List
+        dataSource={list}
+        renderItem={(item) => <List.Item>{item.address}</List.Item>}
+      />
+    </>
+  );
+}
+
+export default App;
+```
+
+1. 输入框和状态管理 使用 useState Hook 管理输入框的值和结果列表。 每次输入框的内容变化时，handleInputChange 函数会被触发，它会获取用户输入的值，并进行 API 请求。
+2. API 请求 在 handleInputChange 中，输入的值会作为查询参数发送到 /api/list API。API 返回的数据用于更新结果列表。 为了优化用户体验，我们将结果更新放在 startTransition 函数中，这样 React 可以在处理更新时保持输入框的响应性。
+3. 使用 useTransition useTransition 返回一个布尔值 isPending，指示过渡任务是否仍在进行中。 当用户输入时，如果正在加载数据，我们会显示一个简单的“loading...”提示，以告知用户当前操作仍在进行。
+4. 列表渲染 使用 List 组件展示返回的结果，列表项显示每个结果的 name 和 address。
+
+### 注意事项
+
+startTransition 必须是同步的
+错误做法
+
+```tsx
+startTransition(() => {
+  // ❌ 在调用 startTransition 后更新状态
+  setTimeout(() => {
+    setPage("/about");
+  }, 1000);
+});
+```
+
+正常做法
+
+```tsx
+setTimeout(() => {
+  startTransition(() => {
+    // ✅ 在调用 startTransition 中更新状态
+    setPage("/about");
+  });
+}, 1000);
+```
+
+async await 错误做法
+
+```tsx
+startTransition(async () => {
+  await someAsyncFunction();
+  // ❌ 在调用 startTransition 后更新状态
+  setPage("/about");
+});
+```
+
+正确做法
+
+```tsx
+await someAsyncFunction();
+startTransition(() => {
+  // ✅ 在调用 startTransition 中更新状态
+  setPage("/about");
+});
+```
+
+### 原理剖析
+
+useTransition 的核心原理是将一部分状态更新处理为低优先级任务，这样可以将关键的高优先级任务先执行，而低优先级的过渡更新则会稍微延迟处理。这在渲染大量数据、进行复杂运算或处理长时间任务时特别有效。React 通过调度机制来管理优先级：
+
+1. 高优先级更新：直接影响用户体验的任务，比如表单输入、按钮点击等。
+2. 低优先级更新：相对不影响交互的过渡性任务，比如大量数据渲染、动画等，这些任务可以延迟执行。
+
+```tsx
++-----------------------+
+  |         App           |
+  |                       |
+  |  +--------------+     |
+  |  |    Input     |     |
+  |  +--------------+     |
+  |                       |
+  |  +--------------+     |
+  |  |   Display    |     |
+  |  +--------------+     |
+  +-----------------------+
+
+  用户输入
+  |
+  v
+  [高优先级更新] ---> [调度器] ---> [React 更新组件]
+  |
+  +---> [低优先级过渡更新] --> [调度器] --> [等待处理]
+```
+
 ## useCallBack
 
 ~~类似于 Vue 的计算属性~~
