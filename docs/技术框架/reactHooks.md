@@ -545,11 +545,631 @@ function App() {
 
 ![alt text](image-1.png)
 
+## useLayoutEffect
+
+useLayoutEffect 是 React 中的一个 Hook，用于在浏览器重新绘制屏幕之前触发。与 useEffect 类似。
+
+### 用法
+
+```tsx
+useLayoutEffect(() => {
+  // 副作用代码
+  return () => {
+    // 清理代码
+  };
+}, [dependencies]);
+```
+
+### 参数
+
+- setup：Effect 处理函数,可以返回一个清理函数。组件挂载时执行 setup,依赖项更新时先执行 cleanup 再执行 setup,组件卸载时执行 cleanup。
+- dependencies(可选)：setup 中使用到的响应式值列表(props、state 等)。必须以数组形式编写如[dep1, dep2]。不传则每次重渲染都执行 Effect。
+
+### 返回值
+
+useLayoutEffect 返回 undefined
+
+### 和 useEffect 的区别
+
+| 区别       | useLayoutEffect          | useEffect                |
+| ---------- | ------------------------ | ------------------------ |
+| 执行时机   | 浏览器完成布局和绘制之前 | 浏览器完成布局和绘制之后 |
+| 执行副作用 | 浏览器完成布局和绘制之后 | 浏览器完成布局和绘制之后 |
+| 执行方式   | 同步执行                 | 异步执行                 |
+| DOM 渲染   | 阻塞 DOM 渲染            | 不阻塞 DOM 渲染          |
+
+#### 测试 DOM 阻塞
+
+下面这个例子展示了 useLayoutEffect 和 useEffect 在 DOM 渲染时的区别。useLayoutEffect 会阻塞 DOM 渲染,而 useEffect 不会。
+
+```tsx
+import React, { useLayoutEffect, useEffect, useState } from "react";
+
+function App() {
+  const [count, setCount] = useState(0);
+  //不阻塞DOM
+  // useEffect(() => {
+  //    for (let i = 0; i < 30000; i++) {
+  //       //console.log(i);
+  //       setCount(count => count + 1)
+  //    }
+  // }, []);
+  阻塞DOM;
+  useLayoutEffect(() => {
+    for (let i = 0; i < 20000; i++) {
+      //console.log(i);
+      setCount((count) => count + 1);
+    }
+  }, []);
+  return (
+    <div>
+      <div>app </div>
+      {Array.from({ length: count }).map((_, index) => (
+        <div key={index}>{index}</div>
+      ))}
+    </div>
+  );
+}
+
+export default App;
+```
+
+#### 测试同步异步渲染
+
+在下面的动画示例代码中:
+
+1. useEffect 实现的动画效果:
+   - 初始渲染时 opacity: 0
+   - 浏览器完成绘制
+   - useEffect 异步执行,设置 opacity: 1
+   - 用户可以看到完整的淡入动画过渡效果
+2. useLayoutEffect 实现的动画效果:
+   - 初始渲染时 opacity: 0
+   - DOM 更新后立即同步执行 useLayoutEffect
+   - 设置 opacity: 1
+   - 浏览器绘制时已经是最终状态
+   - 用户看不到过渡动画效果
+
+```css
+#root1 {
+  width: 200px;
+  height: 200px;
+  background: rgb(13, 238, 125);
+}
+
+#root1 {
+  width: 200px;
+  height: 200px;
+  background: rgb(39, 39, 247);
+  margin-top: 20px;
+  position: absolute;
+  top: 230px;
+}
+```
+
+```tsx
+import React, { useLayoutEffect, useEffect, useRef } from "react";
+
+function App() {
+  // 使用 useEffect 实现动画效果
+  useEffect(() => {
+    const app1 = document.getElementById("app1") as HTMLDivElement;
+    app1.style.transition = "opacity 3s";
+    app1.style.opacity = "1";
+  }, []);
+
+  // 使用 useLayoutEffect 实现动画效果
+  useLayoutEffect(() => {
+    const app2 = document.getElementById("app2") as HTMLDivElement;
+    app2.style.transition = "opacity 3s";
+    app2.style.opacity = "1";
+  }, []);
+
+  return (
+    <div>
+      <div id="root1" style={{ opacity: 0 }}>
+        root1
+      </div>
+      <div id="root2" style={{ opacity: 0 }}>
+        root2
+      </div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+### 应用场景
+
+- 需要同步读取或更改 DOM：例如，你需要读取元素的大小或位置并在渲染前进行调整。
+- 防止闪烁：在某些情况下，异步的 useEffect 可能会导致可见的布局跳动或闪烁。例如，动画的启动或某些可见的快速 DOM 更改。
+- 模拟生命周期方法：如果你正在将旧的类组件迁移到功能组件，并需要模拟 componentDidMount、componentDidUpdate 和 componentWillUnmount 的同步行为。
+
+### 案例
+
+可以记录滚动条位置，等用户返回这个页面时，滚动到之前记录的位置。增强用户体验。
+
+```tsx
+import { useLayoutEffect, useState } from "react";
+
+function App() {
+  useLayoutEffect(() => {
+    const list = document.getElementById("list") as HTMLUListElement;
+    list.scrollTop = 100;
+  }, []);
+  return (
+    <ul id="list" style={{ height: "500px", overflowY: "scroll" }}>
+      {Array.from({ length: 500 }, (_, i) => (
+        <li key={i}>Item {i + 1}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default App;
+```
+
 ## useContext
 
 ## useReducer
 
-useState 的替代方案
+useReducer 是 React 提供的一个高级 Hook,没有它我们也可以正常开发，但是 useReducer 可以使我们的代码具有更好的可读性，可维护性。
+useReducer 跟 useState 一样的都是帮我们管理组件的状态的，但是呢与 useState 不同的是 useReducer 是集中式的管理状态的。
+
+### 用法
+
+```tsx
+const [state, dispatch] = useReducer(reducer, initialArg, initfn?)
+```
+
+### 参数
+
+1. reducer 是一个处理函数，用于更新状态, reducer 里面包含了两个参数，第一个参数是 state，第二个参数是 action。reducer 会返回一个新的 state。
+2. initialArg 是初始状态值。
+3. init 是一个可选的函数，用于初始化 state，如果编写了 init 函数，则默认值使用 init 函数的返回值，否则使用 initialArg。
+
+### 返回值
+
+useReducer 返回一个由两个值组成的数组：
+当前的 state。初次渲染时，它是 init(initialArg) 或 initialArg （如果没有 init 函数）。 dispatch 函数。用于更新 state 并触发组件的重新渲染。
+
+```tsx
+import { useReducer } from "react";
+//根据旧状态进行处理 oldState，处理完成之后返回新状态 newState
+//reducer 只有被dispatch的时候才会被调用 刚进入页面的时候是不会执行的
+//oldState 任然是只读的
+function reducer(oldState, action) {
+  // ...
+  return newState;
+}
+
+function MyComponent() {
+  const [state, dispatch] = useReducer(reducer, { age: 22, name: "123" });
+  // ...
+}
+```
+
+### 计数器案例
+
+初始状态
+
+```tsx
+const initialState = { count: 0 };
+```
+
+这里定义了一个初始状态对象，里面包含了一个 count 属性，初始值为 0。
+reducer 函数
+
+```tsx
+function reducer(state, action) {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    default:
+      throw new Error();
+  }
+}
+```
+
+- reducer 是一个用来根据不同的 action 来更新状态的纯函数。
+- 它接收当前状态 (state) 和一个动作对象 (action)，根据 action.type 来决定如何更新 state。
+- 如果 action.type 是 'increment'，则 count 增加 1；如果是 'decrement'，则 count 减少 1。
+- 如果 action.type 不匹配任何已定义的情况，则抛出一个错误。 App 组件:
+
+```tsx
+const App = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+      <button onClick={() => dispatch({ type: "increment" })}>+</button>
+    </>
+  );
+};
+export default App;
+```
+
+- 当点击 "-" 按钮时，调用 dispatch({ type: 'decrement' })，使 count 减少。
+- 当点击 "+" 按钮时，调用 dispatch({ type: 'increment' })，使 count 增加。
+
+### 购物车案例
+
+1. 初始化状态
+
+```tsx
+const initData = [
+  { name: "大会", price: 9.9, count: 1, id: 1, isEdit: false },
+  { name: "达瓦", price: 19.9, count: 1, id: 2, isEdit: false },
+  { name: "咯女", price: 29.9, count: 1, id: 3, isEdit: false },
+];
+```
+
+- initData 是一个数组，表示初始的商品列表。每个商品有以下属性：
+  - name: 商品的名称（例如 "咯女"）。
+  - price: 单价（例如 9.9）。
+  - count: 数量，默认为 1。
+  - id: 商品的唯一标识符。
+  - isEdit: 表示该商品名称是否处于编辑状态，默认为 false。
+
+2. 定义类型
+
+```tsx
+type State = typeof initData;
+interface Action {
+  type: "ADD" | "SUB" | "DELETE" | "EDIT" | "UPDATE_NAME";
+  id: number;
+  newName?: string;
+}
+```
+
+- List 是商品数组的类型，直接从 initData 推断。
+- Action 是用于更新商品列表的 action 类型。
+  - ADD: 增加某个商品的数量。
+  - SUB: 减少某个商品的数量。
+  - DELETE: 删除某个商品。
+  - EDIT: 切换某个商品的编辑状态。
+  - UPDATE_NAME: 更新某个商品的名称。
+  - id: 需要操作的商品的 id。
+  - newName: 用于 UPDATE_NAME 操作时，新的商品名称。
+
+3. 定义 reducer 函数
+
+```tsx
+function reducer(state, action) {
+  const item = state.find((item) => item.id === action.id);
+  if (item) {
+    switch (action.type) {
+      case "ADD":
+        item.count += 1;
+        return [...state];
+      case "SUB":
+        item.count -= 1;
+        return [...state];
+      case "DELETE":
+        return state.filter((item) => item.id !== action.id);
+      case "EDIT":
+        item.isEdit = !item.isEdit;
+        return [...state];
+      case "UPDATE_NAME":
+        item.name = action.newName;
+        return [...state];
+      default:
+        return state;
+    }
+  }
+  return [...state];
+}
+```
+
+reducer 函数根据传入的 action 更新商品列表的状态。 查找到要操作的商品 item。
+对不同的 action.type 执行相应操作：
+
+- 增加商品数量
+- 减少商品数量
+- 删除商品
+- 切换商品编辑状态
+- 更新商品名称
+
+4. 创建组件
+
+```tsx
+function App() {
+  let [data, dispatch] = useReducer(reducer, initData);
+  return (
+    <>
+      <table cellPadding={0} cellSpacing={0} width={600} border={1}>
+        <thead>
+          <tr>
+            <th>物品</th>
+            <th>价格</th>
+            <th>数量</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item) => {
+            return (
+              <tr key={item.id}>
+                <td align="center">
+                  {item.isEdit ? (
+                    <input
+                      onBlur={(e) => dispatch({ type: "EDIT", id: item.id })}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "UPDATE_NAME",
+                          id: item.id,
+                          newName: e.target.value,
+                        })
+                      }
+                      value={item.name}
+                    />
+                  ) : (
+                    <span>{item.name}</span>
+                  )}
+                </td>
+                <td align="center">{item.price * item.count}</td>
+                <td align="center">
+                  <button
+                    onClick={() => dispatch({ type: "SUB", id: item.id })}
+                  >
+                    -
+                  </button>
+                  <span>{item.count}</span>
+                  <button
+                    onClick={() => dispatch({ type: "ADD", id: item.id })}
+                  >
+                    +
+                  </button>
+                </td>
+                <td align="center">
+                  <button
+                    onClick={() => dispatch({ type: "EDIT", id: item.id })}
+                  >
+                    编辑
+                  </button>
+                  <button
+                    onClick={() => dispatch({ type: "DELETE", id: item.id })}
+                  >
+                    删除
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={3}></td>
+            <td align="center">
+              总价:
+              {data.reduce((prev, next) => prev + next.price * next.count, 0)}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </>
+  );
+}
+```
+
+- App 组件使用 useReducer 来管理 data 状态，它从 initData 初始化，并通过 dispatch 分发动作来改变商品列表。
+- 商品列表通过 table 渲染，每个商品显示以下信息：
+- 物品：如果该商品的 isEdit 为 true，显示一个输入框用于修改名称；否则显示商品名称。
+- 价格：显示商品的总价（price \* count）。
+- 数量：显示商品的数量，提供 - 和 + 按钮来减少或增加数量。
+- 操作：提供 编辑 按钮切换名称编辑状态，删除 按钮可以删除该商品。
+- tfoot 部分显示购物车的总价，通过 reduce 方法计算所有商品的总价。
+
+## useSyncExternalStore
+
+useSyncExternalStore 是 React 18 引入的一个 Hook，用于从外部存储（例如状态管理库、浏览器 API 等）获取状态并在组件中同步显示。这对于需要跟踪外部状态的应用非常有用。
+
+### 场景
+
+1. 订阅外部 store 例如(redux,mobx,Zustand,jotai) vue 的 vuex pinia
+2. 订阅浏览器 API 例如(online,storage,location, history hash)等
+3. 抽离逻辑，编写自定义 hooks
+4. 服务端渲染支持
+
+### 使用
+
+```tsx
+const res = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot?)
+```
+
+- subscribe：用来订阅数据源的变化，接收一个回调函数，在数据源更新时调用该回调函数。
+- getSnapshot：获取当前数据源的快照（当前状态）。
+- getServerSnapshot?：在服务器端渲染时用来获取数据源的快照。
+  返回值：该 res 的当前快照，可以在你的渲染逻辑中使用
+
+```tsx
+const subscribe = (callback: () => void) => {
+  // 订阅
+  callback();
+  return () => {
+    // 取消订阅
+  };
+};
+
+const getSnapshot = () => {
+  return data;
+};
+
+const res = useSyncExternalStore(subscribe, getSnapshot);
+```
+
+### 案例
+
+#### 1. 订阅浏览器 Api 实现自定义 hook(useStorage)
+
+我们实现一个 useStorage Hook，用于订阅 localStorage 数据。这样做的好处是，我们可以确保组件在 localStorage 数据发生变化时，自动更新同步。
+实现代码
+我们将创建一个 useStorage Hook，能够存储数据到 localStorage，并在不同浏览器标签页之间同步这些状态。此 Hook 接收一个键值参数用于存储数据的键名，还可以接收一个默认值用于在无数据时的初始化。
+在 hooks/useStorage.ts 中定义 useStorage Hook：
+
+```tsx
+import { useSyncExternalStore } from "react";
+
+/**
+ *
+ * @param key 存储到localStorage 的key
+ * @param defaultValue 默认值
+ */
+export const useStorage = (key: any, defaultValue?: any) => {
+  const subscribe = (callback: () => void) => {
+    window.addEventListener("storage", (e) => {
+      console.log("触发了", e);
+      callback();
+    });
+    return () => window.removeEventListener("storage", callback);
+  };
+  //从localStorage中获取数据 如果读不到返回默认值
+  const getSnapshot = () => {
+    return (
+      (localStorage.getItem(key)
+        ? JSON.parse(localStorage.getItem(key)!)
+        : null) || defaultValue
+    );
+  };
+  //修改数据
+  const setStorage = (value: any) => {
+    localStorage.setItem(key, JSON.stringify(value));
+    window.dispatchEvent(new StorageEvent("storage")); //手动触发storage事件
+  };
+  //返回数据
+  const res = useSyncExternalStore(subscribe, getSnapshot);
+
+  return [res, setStorage];
+};
+```
+
+在 App.tsx 中，我们可以直接使用 useStorage，来实现一个简单的计数器。值会存储在 localStorage 中，并且在刷新或其他标签页修改数据时自动更新。
+
+```tsx
+import { useStorage } from "./hooks/useStorage";
+const App = () => {
+  const [val, setVal] = useStorage("data", 1);
+  return (
+    <>
+      <h3>{val}</h3>
+      <button onClick={() => setVal(val + 1)}>设置val</button>
+    </>
+  );
+};
+
+export default App;
+```
+
+效果演示
+
+1. 值的持久化：点击按钮增加 val，页面刷新后依然会保留最新值。
+2. 跨标签页同步：在其他标签页中修改 val，当前标签页也会自动更新。
+
+#### 2.订阅 history 实现路由跳转
+
+实现一个简易的 useHistory Hook，获取浏览器 url 信息 + 参数
+
+```tsx
+import { useSyncExternalStore } from "react";
+
+export const useHistory = () => {
+  const subscribe = (callback: () => void) => {
+    window.addEventListener("popstate", callback);
+    return () => window.removeEventListener("popstate", callback);
+  };
+
+  const getSnapshot = () => {
+    return window.location.href;
+  };
+
+  const push = (url: string) => {
+    window.history.pushState({}, "", url);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  };
+
+  const replace = (url: string) => {
+    window.history.replaceState({}, "", url);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  };
+
+  const res = useSyncExternalStore(subscribe, getSnapshot);
+
+  return [res, push, replace];
+};
+```
+
+使用 useHistory Hook
+让我们在组件中使用这个 useHistory Hook，实现基本的前进、后退操作以及程序化导航。
+
+```tsx
+import { useHistory } from "./hooks/useHistory";
+
+const App = () => {
+  const [history, push, replace] = useHistory();
+  return (
+    <>
+      <div>当前 url:{history}</div>
+      <button
+        onClick={() => {
+          push("/x");
+        }}
+      >
+        跳转
+      </button>
+      <button
+        onClick={() => {
+          replace("/y");
+        }}
+      >
+        替换
+      </button>
+    </>
+  );
+};
+
+export default App;
+```
+
+效果演示
+
+- history：这是 useHistory 返回的当前路径值。每次 URL 变化时，useSyncExternalStore 会自动触发更新，使 history 始终保持最新路径。
+- push 和 replace：点击“跳转”按钮调用 push("/x")，会将 /aaa 推入历史记录；点击“替换”按钮调用 replace("/y")，则会将当前路径替换为 /y。
+
+### 注意事项
+
+如果 getSnapshot 返回值和上一次不同时，React 会重新渲染组件。这就是为什么，如果总是返回一个不同的值，会进入到一个无限循环，并产生这个报错。
+
+```tsx
+Uncaught (in promise) Error: Maximum update depth exceeded.
+This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
+React limits the number of nested updates to prevent infinite loops.
+
+```
+
+```tsx
+function getSnapshot() {
+  return obj.todos; //object
+}
+```
+
+这种写法每次返回了对象的引用，即使这个对象没有改变，React 也会重新渲染组件。
+如果你的 store 数据是可变的，getSnapshot 函数应当返回一个它的不可变快照。这意味着 确实 需要创建新对象，但不是每次调用都如此。而是应当保存最后一次计算得到的快照，并且在 store 中的数据不变的情况下，返回与上一次相同的快照。如何决定可变数据发生了改变则取决于你的可变 store。
+
+```tsx
+function getSnapshot() {
+  if (obj.todos !== lastTodos) {
+    // 只有在 todos 真的发生变化时，才更新快照
+    lastSnapshot = { todos: obj.todos.slice() };
+    lastTodos = obj.todos;
+  }
+  return lastSnapshot;
+}
+```
 
 ## useCallBack
 
@@ -614,6 +1234,14 @@ useCallback 的主要目的是解决这样的问题。它确保，除非依赖�
 > 好的自定义 Hook 通过限制功能使代码调用更具声明性。例如 useChatRoom(options) 只能连接聊天室，而 useImpressionLog(eventName, extraData) 只能向分析系统发送展示日志。如果你的自定义 Hook API 没有约束用例且非常抽象，那么在长期的运行中，它引入的问题可能比解决的问题更多。
 
 ![iamge](../public/vue3/react/自定义hooks2.png)
+
+```
+
+```
+
+```
+
+```
 
 ```
 
