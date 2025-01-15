@@ -1,5 +1,5 @@
 ---
-updateTime: "2024-07-29 11:29:10"
+updateTime: "2024-12-29 11:29:10"
 desc: "reactHooks"
 tags: "reactHooks/学习"
 ---
@@ -1348,7 +1348,218 @@ useCallback 的主要目的是解决这样的问题。它确保，除非依赖�
 
 ## useRef
 
+::: warning
+
+1. 组件在重新渲染的时候，useRef 的值不会被重新初始化。
+2. 改变 ref.current 属性时，React 不会重新渲染组件。React 不知道它何时会发生改变，因为 ref 是一个普通的 JavaScript 对象。
+3. useRef 的值不能作为 useEffect 等其他 hooks 的依赖项，因为它并不是一个响应式状态。
+4. useRef 不能直接获取子组件的实例，需要使用 forwardRef。
+
+:::
+当你在 React 中需要处理 DOM 元素或需要在组件渲染之间保持持久性数据时，便可以使用 useRef。
+
+```txs
+import { useRef } from 'react';
+const refValue = useRef(initialValue)
+refValue.current
+```
+
+::: tip
+和 vue ref 的区别
+访问 ref 的值 类似于 vue 的 ref,Vue 的 ref 是.value， 改变值 视图会从重新渲染组件
+其次就是 vue 的 ref 是响应式的，而 react 的 ref 不是响应式的 （是普通的 JavaScript 对象）
+:::
+
+### 通过 Ref 操作 DOM 元素
+
+参数: initialValue：ref 对象的 current 属性的初始值。可以是任意类型的值。这个参数在首次渲染后被忽略。
+返回值: useRef 返回一个对象，对象的 current 属性指向传入的初始值。 {current:xxxx}
+
+注意
+
+- 改变 ref.current 属性时，React 不会重新渲染组件。React 不知道它何时会发生改变，因为 ref 是一个普通的 JavaScript 对象。
+- 除了初始化外不要在渲染期间写入或者读取 ref.current，否则会使组件行为变得不可预测。
+
+```tsx
+import { useRef } from "react";
+function App() {
+  //首先，声明一个 初始值 为 null 的 ref 对象
+  let div = useRef(null);
+  const heandleClick = () => {
+    //当 React 创建 DOM 节点并将其渲染到屏幕时，React 将会把 DOM 节点设置为 ref 对象的 current 属性
+    console.log(div.current);
+  };
+  return (
+    <>
+      {/*然后将 ref 对象作为 ref 属性传递给想要操作的 DOM 节点的 JSX*/}
+      <div ref={div}>dom元素</div>
+      <button onClick={heandleClick}>获取dom元素</button>
+    </>
+  );
+}
+export default App;
+```
+
+### 数据存储
+
+我们实现一个保存 count 的新值和旧值的例子，但是在过程中我们发现一个问题，就是 num 的值一直为 0，这是为什么呢？
+因为等 useState 的 SetCount 执行之后，组件会重新 rerender,num 的值又被初始化为了 0，所以 num 的值一直为 0。
+
+```tsx
+import React, { useLayoutEffect, useRef, useState } from "react";
+
+function App() {
+  let num = 0;
+  let [count, setCount] = useState(0);
+  const handleClick = () => {
+    setCount(count + 1);
+    num = count;
+  };
+  return (
+    <div>
+      <button onClick={handleClick}>增加</button>
+      <div>
+        {count}:{num}
+      </div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+![alt text](image-2.png)
+
+#### 如何修改
+
+我们可以使用 useRef 来解决这个问题，因为 useRef 只会在初始化的时候执行一次，当组件 reRender 的时候，useRef 的值不会被重新初始化。
+
+```tsx
+import React, { useLayoutEffect, useRef, useState } from "react";
+
+function App() {
+  let num = useRef(0);
+  let [count, setCount] = useState(0);
+  const handleClick = () => {
+    setCount(count + 1);
+    num.current = count;
+  };
+  return (
+    <div>
+      <button onClick={handleClick}>增加</button>
+      <div>
+        {count}:{num.current}
+      </div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+![alt text](image-3.png)
+
+#### 实际应用
+
+我们实现一个计时器的例子，在点击开始计数的时候，计时器会每 300ms 执行一次，在点击结束计数的时候，计时器会被清除。
+
+##### 问题
+
+我们发现，点击 end 的时候，计时器并没有被清除，这是为什么呢？
+
+##### 原因
+
+这是因为组件一直在重新 ReRender,所以 timer 的值一直在被重新赋值为 null，导致无法清除计时器。
+
+```tsx
+import React, { useLayoutEffect, useRef, useState } from "react";
+
+function App() {
+  console.log("render");
+  let timer: NodeJS.Timeout | null = null;
+  let [count, setCount] = useState(0);
+  const handleClick = () => {
+    timer = setInterval(() => {
+      //   setCount((count) => count + 1);
+      setCount(count + 1);
+    }, 300);
+  };
+  const handleEnd = () => {
+    console.log(timer);
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  };
+  return (
+    <div>
+      <button onClick={handleClick}>开始计数</button>
+      <button onClick={handleEnd}>结束计数</button>
+      <div>{count}</div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+##### 如何修改
+
+我们可以使用 useRef 来解决这个问题，因为 useRef 的值不会因为组件的重新渲染而改变。
+
+```tsx
+import React, { useLayoutEffect, useRef, useState } from "react";
+
+function App() {
+  console.log("render");
+  let timer = useRef<null | NodeJS.Timeout>(null);
+  let [count, setCount] = useState(0);
+  const handleClick = () => {
+    timer.current = setInterval(() => {
+      setCount((count) => count + 1);
+    }, 300);
+  };
+  const handleEnd = () => {
+    if (timer.current) {
+      clearInterval(timer.current);
+      timer.current = null;
+    }
+  };
+  return (
+    <div>
+      <button onClick={handleClick}>开始计数</button>
+      <button onClick={handleEnd}>结束计数</button>
+      <div>{count}</div>
+    </div>
+  );
+}
+
+export default App;
+```
+
 ## useImperativeHandle
+
+可以在子组件内部暴露给父组件句柄，那么说人话就是，父组件可以调用子组件的方法，或者访问子组件的属性。 如果你学过 Vue，就类似于 Vue 的 defineExpose。
+
+### 使用
+
+```tsx
+useImperativeHandle(
+  ref,
+  () => {
+    return {
+      // 暴露给父组件的方法或属性
+    };
+  },
+  [deps]
+);
+```
+
+### 参数
+
+- ref: 父组件传递的 ref 对象
+- createHandle: 返回值，返回一个对象，对象的属性就是子组件暴露给父组件的方法或属性
+- deps?:[可选] 依赖项，当依赖项发生变化时，会重新调用 createHandle 函数，类似于 useEffect 的依赖项
 
 ## 自定义 hooks
 
@@ -1381,6 +1592,10 @@ useCallback 的主要目的是解决这样的问题。它确保，除非依赖�
 > 好的自定义 Hook 通过限制功能使代码调用更具声明性。例如 useChatRoom(options) 只能连接聊天室，而 useImpressionLog(eventName, extraData) 只能向分析系统发送展示日志。如果你的自定义 Hook API 没有约束用例且非常抽象，那么在长期的运行中，它引入的问题可能比解决的问题更多。
 
 ![iamge](../public/vue3/react/自定义hooks2.png)
+
+```
+
+```
 
 ```
 
