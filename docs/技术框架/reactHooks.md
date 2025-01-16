@@ -712,6 +712,209 @@ export default App;
 
 ## useContext
 
+useContext 提供了一个无需为每层组件手动添加 props，就能在组件树间进行数据传递的方法。设计的目的就是解决组件树间数据传递的问题。
+![alt text](image-4.png)
+
+### 用法
+
+```tsx
+const MyThemeContext = React.createContext({ theme: "light" }); // 创建一个上下文
+function App() {
+  return (
+    <MyThemeContext.Provider value={{ theme: "light" }}>
+      <MyComponent />
+    </MyThemeContext.Provider>
+  );
+}
+function MyComponent() {
+  const themeContext = useContext(MyThemeContext); // 使用上下文
+  return <div>{themeContext.theme}</div>;
+}
+```
+
+### 参数
+
+入参
+
+- context：是 createContext 创建出来的对象，他不保持信息，他是信息的载体。声明了可以从组件获取或者给组件提供信息。
+
+返回值
+
+- 返回传递的 Context 的值，并且是只读的。如果 context 发生变化，React 会自动重新渲染读取 context 的组件
+
+### 基本用法
+
+::: info
+我们编写一个传递主题的例子， 这个 hook 在 18 版本和 19 版本是有区别的。
+:::
+**18 版本**:
+首先我们先通过 createContext 创建一个上下文，然后通过 createContext 创建的组件包裹组件，传递值。
+
+被包裹的组件，在任何一个层级都是可以获取上下文的值，那么如何使用呢？
+
+使用的方式就是通过 useContext 这个 hook，然后传入上下文，就可以获取到上下文的值。
+
+```tsx
+import React, { useContext, useState } from "react";
+// 创建上下文
+const ThemeContext = React.createContext<ThemeContextType>(
+  {} as ThemeContextType
+);
+// 定义上下文类型
+interface ThemeContextType {
+  theme: string;
+  setTheme: (theme: string) => void;
+}
+const Child = () => {
+  // 获取上下文
+  const themeContext = useContext(ThemeContext);
+  const styles = {
+    backgroundColor: themeContext.theme === "light" ? "white" : "black",
+    border: "1px solid red",
+    width: 100 + "px",
+    height: 100 + "px",
+    color: themeContext.theme === "light" ? "black" : "white",
+  };
+  return (
+    <div>
+      <div style={styles}>child</div>
+    </div>
+  );
+};
+
+const Parent = () => {
+  // 获取上下文
+  const themeContext = useContext(ThemeContext);
+  const styles = {
+    backgroundColor: themeContext.theme === "light" ? "white" : "black",
+    border: "1px solid red",
+    width: 100 + "px",
+    height: 100 + "px",
+    color: themeContext.theme === "light" ? "black" : "white",
+  };
+  return (
+    <div>
+      <div style={styles}>Parent</div>
+      <Child />
+    </div>
+  );
+};
+
+function App() {
+  const [theme, setTheme] = useState("light");
+  return (
+    <div>
+      <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+        切换主题
+      </button>
+      <ThemeContext.Provider value={{ theme, setTheme }}>
+        <Parent />
+      </ThemeContext.Provider>
+    </div>
+  );
+}
+
+export default App;
+```
+
+**19 版本**:
+::: tip
+其实 19 版本和 18 版本是差不多的，只是 19 版本更加简单了，不需要再使用 Provider 包裹，直接使用即可。
+:::
+
+```tsx
+import React, { useContext, useState } from 'react';
+const ThemeContext = React.createContext<ThemeContextType>({} as ThemeContextType);
+interface ThemeContextType {
+   theme: string;
+   setTheme: (theme: string) => void;
+}
+
+const Child = () => {
+   const themeContext = useContext(ThemeContext);
+   const styles = {
+      backgroundColor: themeContext.theme === 'light' ? 'white' : 'black',
+      border: '1px solid red',
+      width: 100 + 'px',
+      height: 100 + 'px',
+      color: themeContext.theme === 'light' ? 'black' : 'white'
+   }
+   return <div>
+      <div style={styles}>
+         child
+      </div>
+   </div>
+}
+
+const Parent = () => {
+   const themeContext = useContext(ThemeContext);
+   const styles = {
+      backgroundColor: themeContext.theme === 'light' ? 'white' : 'black',
+      border: '1px solid red',
+      width: 100 + 'px',
+      height: 100 + 'px',
+      color: themeContext.theme === 'light' ? 'black' : 'white'
+   }
+   return <div>
+      <div style={styles}>
+         Parent
+      </div>
+      <Child />
+   </div>
+}
+function App() {
+   const [theme, setTheme] = useState('light');
+   return (
+      <div>
+         <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>切换主题</button>
+         <ThemeContext.Provider value={{ theme, setTheme }}> // [!code --]
+         <ThemeContext value={{ theme, setTheme }}> // [!code ++]
+            <Parent />
+        </ThemeContext.Provider> // [!code --]
+         <ThemeContext>  // [!code ++]
+      </div >
+   );
+}
+
+export default App;
+```
+
+### 注意事项
+
+- 使用 ThemeContext 时，传递的 key 必须为 value
+
+```tsx
+  // 🚩 不起作用：prop 应该是“value”
+  <ThemeContext theme={theme}>
+   <Button />
+  </ThemeContext>
+  // ✅ 传递 value 作为 prop
+  <ThemeContext value={theme}>
+   <Button />
+  </ThemeContext>
+```
+
+::: warning
+如果使用多个 Context，那么需要注意，如果使用的值是相同的，那么会覆盖。
+:::
+
+```tsx
+// 🚩 不起作用：prop 应该是“value”
+const ThemeContext = React.createContext({ theme: "light" });
+
+function App() {
+  return (
+    <ThemeContext value={{ theme: "light" }}>
+      <ThemeContext value={{ theme: "dark" }}>
+        {" "}
+        {/* 覆盖了上面的值 */}
+        <Parent />
+      </ThemeContext>
+    </ThemeContext>
+  );
+}
+```
+
 ## useReducer
 
 useReducer 是 React 提供的一个高级 Hook,没有它我们也可以正常开发，但是 useReducer 可以使我们的代码具有更好的可读性，可维护性。
@@ -1344,7 +1547,163 @@ useCallback 的主要目的是解决这样的问题。它确保，除非依赖�
 
 ## useMemo
 
-类似于 Vue 的计算属性
+useMemo 是 React 提供的一个性能优化 Hook。它的主要功能是避免在每次渲染时执行复杂的计算和对象重建。通过记忆上一次的计算结果，仅当依赖项变化时才会重新计算，提高了性能，有点类似于 Vue 的 computed。
+
+### 用法
+
+使用 React.memo 包裹组件[一般用于子组件]，可以避免组件重新渲染。
+
+```tsx
+import React, { memo } from "react";
+const MyComponent = React.memo(({ prop1, prop2 }) => {
+  // 组件逻辑
+});
+const App = () => {
+  return <MyComponent prop1="value1" prop2="value2" />;
+};
+```
+
+### React.memo 案例
+
+首先明确 React 组件的渲染条件：
+
+1. 组件的 props 发生变化
+2. 组件的 state 发生变化
+3. useContext 发生变化
+
+我们来看下面这个例子，这个例子没有使用 memo 进行缓存，所以每次父组件的 state 发生变化，子组件都会重新渲染。
+而我们的子组件只用到了 user 的信息，但是父组件每次 search 发生变化，子组件也会重新渲染, 这样就就造成了没必要的渲染所以我们使用 memo 缓存
+
+```tsx
+import React, { useMemo, useState } from 'react';
+interface User {
+  name: string;
+  age: number;
+  email: string;
+}
+interface CardProps {
+  user: User;
+}
+const Card = function ({ user }: CardProps) {
+  const Card = React.memo(function ({ user }: CardProps) {
+    console.log('Card render'); // 每次父组件的 state 发生变化，子组件都会重新渲染
+    const styles = {
+      backgroundColor: 'blue',
+      padding: '15px',
+      borderRadius: '5px',
+      margin: '8px'
+    }
+    return <div style={styles}>
+      <h1>{user.name}</h1>
+      <p>{user.age}</p>
+      <p>{user.email}</p>
+    </div>
+  }
+                          })
+  function App() {
+    const [users, setUsers] = useState<User>({
+      name: '大伟',
+      age: 28,
+      job: 'fe'
+    });
+    const [search, setSearch] = useState('');
+    return (
+      <div>
+        <h1>父组件</h1>
+        <input value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Card user={users} />
+      </div>
+    );
+  }
+
+  export default App;
+```
+
+当我们使用 memo 缓存后，只有 user 发生变化时，子组件才会重新渲染, 而 search 发生变化时，子组件不会重新渲染。
+
+```tsx
+import React, { useMemo, useState } from "react";
+interface User {
+  name: string;
+  age: number;
+  email: string;
+}
+interface CardProps {
+  user: User;
+}
+const Card = React.memo(function ({ user }: CardProps) {
+  console.log("Card render");
+  const styles = {
+    backgroundColor: "lightblue",
+    padding: "20px",
+    borderRadius: "10px",
+    margin: "10px",
+  };
+  return (
+    <div style={styles}>
+      <h1>{user.name}</h1>
+      <p>{user.age}</p>
+      <p>{user.email}</p>
+    </div>
+  );
+});
+function App() {
+  const [users, setUsers] = useState<User>({
+    name: "张三",
+    age: 18,
+    email: "zhangsan@example.com",
+  });
+  const [search, setSearch] = useState("");
+  return (
+    <div>
+      <h1>父组件</h1>
+      <input value={search} onChange={(e) => setSearch(e.target.value)} />
+      <div>
+        <button
+          onClick={() =>
+            setUsers({
+              name: "李四",
+              age: Math.random() * 100,
+              email: "lisi@example.com",
+            })
+          }
+        >
+          更新user
+        </button>
+      </div>
+      <Card user={users} />
+    </div>
+  );
+}
+
+export default App;
+```
+
+### React.memo 总结
+
+1. 使用场景：
+   - 当子组件接收的 props 不经常变化时
+   - 当组件重新渲染的开销较大时
+   - 当需要避免不必要的渲染时
+2. 优点
+   - 提高性能，减少不必要的渲染。
+   - 减少资源消耗
+   - 提高应用性能
+3. 注意事项
+   - 不要过度使用，只在确实需要优化的组件上使用
+   - 对于简单的组件，使用 memo 的开销可能比重新渲染还大
+   - 如果 props 经常变化， memo 的效果会大打折扣
+
+### useMemo 使用
+
+```tsx
+import React, { useMemo, useState } from "react";
+const App = () => {
+  const [count, setCount] = useState(0);
+  const memoizedValue = useMemo(() => count, [count]);
+  return <div>{memoizedValue}</div>;
+};
+```
 
 ## useRef
 
@@ -1824,23 +2183,3 @@ export default App;
 > 好的自定义 Hook 通过限制功能使代码调用更具声明性。例如 useChatRoom(options) 只能连接聊天室，而 useImpressionLog(eventName, extraData) 只能向分析系统发送展示日志。如果你的自定义 Hook API 没有约束用例且非常抽象，那么在长期的运行中，它引入的问题可能比解决的问题更多。
 
 ![iamge](../public/vue3/react/自定义hooks2.png)
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
