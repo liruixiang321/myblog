@@ -198,6 +198,10 @@ export default defineConfig({
               text: "elMessage二次封装",
               link: "/weeks/elMessage二次封装",
             },
+            {
+              text: "Vue动态路由实现",
+              link: "/weeks/Vue动态路由实现",
+            },
           ],
         },
       ],
