@@ -1535,6 +1535,147 @@ useCallback 的主要目的是解决这样的问题。它确保，除非依赖�
 ![iamge](../public/vue3/react/useCallback.png)
 只有当 dependency1、dependency2 等依赖发生改变时，函数才会重新创建。这对于 React.memo 化的组件、useEffect、useMemo 等钩子的输入特别有用，因为它们都依赖于输入的引用恒定性。
 
+### 用法
+
+```tsx
+const memoizedCallback = useCallback(() => {
+  doSomething(a, b);
+}, [a, b]);
+```
+
+### 参数
+
+1. callback: 需要被记忆的函数。
+2. dependencies: 一个依赖项数组。当数组中的任意一个值发生变化时，callback 会被重新创建。
+3. 返回值: 返回一个记忆化的函数。
+
+### 案例 1
+
+来看这个实例：
+
+- 我们创建了一个 WeakMap(用 Map 也行)，用于存储回调函数，并记录回调函数的创建次数。
+- 在组件重新渲染时，changeSearch 函数会被重新创建，我们这边会进行验证，如果函数被重新创建了数量会+1，如果没有重新创建，数量默认是 1。
+  ::: code-group
+
+```tsx
+import { useCallback, useState } from "react";
+const functionMap = new WeakMap();
+let counter = 1;
+const App: React.FC = () => {
+  console.log("Render App");
+  const [search, setSearch] = useState("");
+  const changeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+  if (!functionMap.has(changeSearch)) {
+    functionMap.set(changeSearch, counter++);
+  }
+  console.log("函数Id", functionMap.get(changeSearch));
+  return (
+    <>
+      <input type="text" value={search} onChange={changeSearch} />
+    </>
+  );
+};
+export default App;
+```
+
+:::
+我们更改输入框的值，可以看到函数 Id 在增加，说明函数被重新创建了。
+![alt text](Snipaste_2025-01-21_13-17-37.png)
+为什么是 4 呢，因为默认是 1，然后输入框更改了 3 次，所以是 4，那么这样好吗？我们使用 useCallback 来优化一下。
+::: tip
+只需要在 changeSearch 函数上使用 useCallback，就可以优化性能。
+:::
+
+::: code-group
+
+```tsx
+const changeSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  setSearch(e.target.value);
+}, []);
+```
+
+:::
+我们可以看到函数 Id 没有增加，说明函数没有被重新创建。
+![alt text](image-5.png)
+
+### 案例 2
+
+应用于子组件：
+
+- 我们创建了一个 Child 子组件，并使用 React.memo 进行优化，memo 在上一章讲过了，他会检测 props 是否发生变化，如果发生变化，就会重新渲染子组件。
+- 我们创建了一个 childCallback 函数，传递给子组件，然后我们输入框更改值，发现子组件居然重新渲染了，但是我们并没有更改 props，这是为什么呢？
+- 这是因为输入框的值发生变化，App 就会重新渲染，然后 childCallback 函数就会被重新创建，然后传递给子组件，子组件会判断这个函数是否发生变化，但是每次创建的函数内存地址都不一样，所以子组件会重新渲染。
+  ::: code-group
+
+```tsx
+import React, { useCallback, useState } from "react";
+const Child = React.memo(
+  ({
+    user,
+    callback,
+  }: {
+    user: { name: string; age: number };
+    callback: () => void;
+  }) => {
+    console.log("Render Child");
+    const styles = {
+      color: "red",
+      fontSize: "20px",
+    };
+    return (
+      <div style={styles}>
+        <div>{user.name}</div>
+        <div>{user.age}</div>
+        <button onClick={callback}>callback</button>
+      </div>
+    );
+  }
+);
+
+const App: React.FC = () => {
+  const [search, setSearch] = useState("");
+  const [user, setUser] = useState({
+    name: "John",
+    age: 20,
+  });
+  const childCallback = () => {
+    console.log("callback 执行了");
+  };
+  return (
+    <>
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <Child callback={childCallback} user={user} />
+    </>
+  );
+};
+
+export default App;
+```
+
+:::
+因为 App 重新渲染了，所以 childCallback 函数会被重新创建，然后传递给子组件，子组件会判断这个函数是否发生变化，但是每次创建的函数内存地址都不一样，所以子组件会重新渲染。
+
+::: tip
+解决方法:只需要在 childCallback 函数上使用 useCallback，就可以优化性能。
+:::
+
+```tsx
+const childCallback = useCallback(() => {
+  console.log("callback 执行了");
+}, []);
+```
+
+### 总结
+
+useCallback 的使用需要有所节制，不要盲目地对每个方法应用 useCallback，这样做可能会导致不必要的性能损失。useCallback 本身也需要一定的性能开销。
+useCallback 并不是为了阻止函数的重新创建，而是通过依赖项来决定是否返回新的函数或旧的函数，从而在依赖项不变的情况下确保函数的地址不变。
+
 ### useMemo 和 useCallback
 
 <LinkCard link="https://zhuanlan.zhihu.com/p/678677928" desc="精读React hooks（八）：我们为什么需要useCallback"></LinkCard>
